@@ -14,7 +14,9 @@
 
 ### `polyrepo workspace init`
 
-Initialize a new polyrepo workspace.
+Initialize a polyrepo workspace configuration.
+
+> This will overwrite the `.polyrepo.yaml` file at the given path if it exists.
 
 | Flag       | Default            | Required | Description                                       |
 | ---------- | ------------------ | -------- | ------------------------------------------------- |
