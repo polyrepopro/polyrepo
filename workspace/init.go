@@ -3,12 +3,14 @@ package workspace
 import (
 	"log"
 
+	"github.com/polyrepopro/api/workspaces"
 	"github.com/spf13/cobra"
 )
 
 func init() {
-	initCommand.Flags().StringP("name", "n", "", "The name of the workspace.")
-	initCommand.MarkFlagRequired("name")
+	initCommand.Flags().StringP("path", "p", "", "The path to the workspace.")
+	initCommand.Flags().StringP("url", "u", "", "The URL to the workspace.")
+	initCommand.MarkFlagRequired("path")
 
 	WorkspaceCommand.AddCommand(initCommand)
 }
@@ -18,11 +20,22 @@ var initCommand = &cobra.Command{
 	Short: "Initialize a new workspace.",
 	Long:  "Apply tags to subscriptions.",
 	Run: func(cmd *cobra.Command, args []string) {
-		name, err := cmd.Flags().GetString("name")
+		path, err := cmd.Flags().GetString("path")
 		if err != nil {
-			log.Fatalf("Failed to get name: %v", err)
+			log.Fatalf("Failed to get path: %v", err)
+		}
+		url, err := cmd.Flags().GetString("url")
+		if err != nil {
+			log.Fatalf("Failed to get url: %v", err)
 		}
 
-		log.Printf("Init workspace %s", name)
+		log.Printf("Init workspace %s", path)
+		err = workspaces.Init(workspaces.InitArgs{
+			Path: path,
+			URL:  url,
+		})
+		if err != nil {
+			log.Fatalf("Failed to init workspace: %v", err)
+		}
 	},
 }
