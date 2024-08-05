@@ -9,8 +9,9 @@ import (
 
 func init() {
 	initCommand.Flags().StringP("path", "p", "", "The path to the workspace.")
-	initCommand.Flags().StringP("url", "u", "", "The URL to the workspace.")
 	initCommand.MarkFlagRequired("path")
+
+	initCommand.Flags().StringP("url", "u", "", "The URL to the workspace.")
 
 	WorkspaceCommand.AddCommand(initCommand)
 }
@@ -24,12 +25,12 @@ var initCommand = &cobra.Command{
 		if err != nil {
 			log.Fatalf("Failed to get path: %v", err)
 		}
+
 		url, err := cmd.Flags().GetString("url")
 		if err != nil {
 			log.Fatalf("Failed to get url: %v", err)
 		}
 
-		log.Printf("Init workspace %s", path)
 		err = workspaces.Init(workspaces.InitArgs{
 			Path: path,
 			URL:  url,
