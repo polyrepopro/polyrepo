@@ -1,4 +1,4 @@
-package workspace
+package main
 
 import (
 	"log"
@@ -13,7 +13,7 @@ func init() {
 
 	initCommand.Flags().StringP("url", "u", "", "The URL to the workspace.")
 
-	WorkspaceCommand.AddCommand(initCommand)
+	root.AddCommand(initCommand)
 }
 
 var initCommand = &cobra.Command{
@@ -31,12 +31,14 @@ var initCommand = &cobra.Command{
 			log.Fatalf("Failed to get url: %v", err)
 		}
 
-		err = workspaces.Init(workspaces.InitArgs{
+		cfg, err := workspaces.Init(workspaces.InitArgs{
 			Path: path,
 			URL:  url,
 		})
 		if err != nil {
 			log.Fatalf("Failed to init workspace: %v", err)
 		}
+
+		log.Printf("Initialized workspace: %v", cfg.Path)
 	},
 }

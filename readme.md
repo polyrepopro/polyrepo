@@ -35,10 +35,10 @@ workspaces:
 | ------------------------------------------------------- | ------------------------------------------------------------- |
 | [polyrepo help](#polyrepo-help)                         | Show the help for the polyrepo CLI.                           |
 | [polyrepo version](#polyrepo-version)                   | Show the version of the polyrepo CLI.                         |
-| [polyrepo workspace init](#polyrepo-workspace-init)     | Initialize a new polyrepo workspace.                          |
-| [polyrepo workspace info](#polyrepo-workspace-info)     | Show the information of the polyrepo workspace.               |
-| [polyrepo workspace sync](#polyrepo-workspace-sync)     | Sync the polyrepo workspace with the remote.                  |
+| [polyrepo init](#polyrepo-init)                         | Initialize a new global `.polyrepo.yaml` configuration file.  |
 | [polyrepo workspace status](#polyrepo-workspace-status) | Show the status of the polyrepo workspace.                    |
+| [polyrepo workspace sync](#polyrepo-workspace-sync)     | Sync workspace with the remotes.                              |
+| [polyrepo workspace switch](#polyrepo-workspace-switch) | Switch the branch of repositories in a workspace.             |
 | [polyrepo repo add](#polyrepo-repo-add)                 | Add a repository to the polyrepo workspace.                   |
 | [polyrepo repo remove](#polyrepo-repo-remove)           | Remove a repository from the polyrepo workspace.              |
 | [polyrepo repo sync](#polyrepo-repo-sync)               | Sync a repo with the remote.                                  |
@@ -52,28 +52,39 @@ Show the help for the polyrepo CLI.
 
 Show the version of the polyrepo CLI.
 
-### `polyrepo workspace init`
+### `polyrepo init`
 
-Initialize a polyrepo workspace configuration.
+Initialize a new global `.polyrepo.yaml` configuration file.
 
 > This will overwrite the `.polyrepo.yaml` file at the given path if it exists.
 
 | Flag       | Default            | Required | Description                                       |
 | ---------- | ------------------ | -------- | ------------------------------------------------- |
-| -p, --path | `~/.polyrepo.yaml` | Yes      | The path to save the `.polyrepo.yaml` file.       |
-| -u, --url  |                    | Yes      | A URL to download the `.polyrepo.yaml` file from. |
-
-### `polyrepo workspace info`
-
-Show the information of the polyrepo workspace.
-
-### `polyrepo workspace sync`
-
-Sync the polyrepo workspace with the remote.
+| -p, --path | `~/.polyrepo.yaml` | **Yes**  | The path to save the `.polyrepo.yaml` file.       |
+| -u, --url  |                    | No       | A URL to download the `.polyrepo.yaml` file from. |
 
 ### `polyrepo workspace status`
 
 Show the status of the polyrepo workspace.
+
+### `polyrepo workspace sync`
+
+Sync workspace with the remotes.
+
+This command syncs the workspace by ensuring that each repository exists locally.
+
+| Flag       | Default | Required | Description                        |
+| ---------- | ------- | -------- | ---------------------------------- |
+| -n, --name |         | No       | The name of the workspace to sync. |
+
+### `polyrepo workspace switch`
+
+Switch the branch of repositories in a workspace.
+
+| Flag         | Default | Required | Description                               |
+| ------------ | ------- | -------- | ----------------------------------------- |
+| -n, --name   |         | **Yes**  | The name of the workspace to switch.      |
+| -b, --branch |         | **Yes**  | The branch to switch the repositories to. |
 
 ### `polyrepo repo add`
 

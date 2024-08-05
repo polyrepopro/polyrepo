@@ -6,17 +6,17 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var root = &cobra.Command{
+	Use:   "poly",
+	Short: "Polyrepo CLI tool",
+	Long:  "Polyrepo CLI tool",
+}
+
 func main() {
 	multilog.RegisterLogger(multilog.LogMethod("console"), multilog.NewConsoleLogger(&multilog.NewConsoleLoggerArgs{
-		Level:  multilog.DEBUG,
+		Level:  multilog.INFO,
 		Format: multilog.FormatText,
 	}))
-
-	var root = &cobra.Command{
-		Use:   "poly",
-		Short: "Polyrepo CLI tool",
-		Long:  "Polyrepo CLI tool",
-	}
 
 	root.AddCommand(workspace.WorkspaceCommand)
 
