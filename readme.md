@@ -10,6 +10,25 @@ Polyrepo CLI is a command-line interface for the Polyrepo project. It allows you
 go install github.com/polyrepo/cli
 ```
 
+## Configuration
+
+Polyrepo workspaces are configured in a `.polyrepo.yaml` file which can be created by running `polyrepo workspace init`.
+
+An example `.polyrepo.yaml` file looks like this:
+
+```yaml
+workspaces:
+  - name: dev
+    path: ~/workspace/polyrepo-dev
+    repositories:
+      - url: git@github.com:polyrepopro/api.git
+        branch: main
+        path: pkg/api
+      - url: git@github.com:polyrepopro/cli.git
+        branch: main
+        path: pkg/cli
+```
+
 ## Commands
 
 | Command                                                 | Description                                                   |
