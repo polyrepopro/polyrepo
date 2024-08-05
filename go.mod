@@ -3,7 +3,7 @@ module github.com/polyrepopro/cli
 go 1.22.0
 
 require (
-	github.com/polyrepopro/api v0.0.0-20240805011735-fc1bc75b5ff1
+	github.com/polyrepopro/api v0.0.0-20240805022248-7227eec6db62
 	github.com/spf13/cobra v1.8.1
 )
 
