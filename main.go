@@ -13,12 +13,21 @@ var root = &cobra.Command{
 }
 
 func main() {
+	root.AddCommand(workspace.WorkspaceCommand)
+	root.PersistentFlags().StringP("config", "c", "", "The path to the polyrepo config file.")
+	root.PersistentFlags().BoolP("verbose", "v", false, "Output detailed logs.")
+
+	logLevel := multilog.INFO
+
+	if verbose, _ := root.PersistentFlags().GetBool("verbose"); verbose {
+		logLevel = multilog.DEBUG
+	}
+
 	multilog.RegisterLogger(multilog.LogMethod("console"), multilog.NewConsoleLogger(&multilog.NewConsoleLoggerArgs{
-		Level:  multilog.INFO,
+		Level:  logLevel,
 		Format: multilog.FormatText,
 	}))
 
-	root.AddCommand(workspace.WorkspaceCommand)
-
 	root.Execute()
+
 }

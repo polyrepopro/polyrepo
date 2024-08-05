@@ -39,6 +39,9 @@ workspaces:
 | [polyrepo workspace status](#polyrepo-workspace-status) | Show the status of the polyrepo workspace.                    |
 | [polyrepo workspace sync](#polyrepo-workspace-sync)     | Sync workspace with the remotes.                              |
 | [polyrepo workspace switch](#polyrepo-workspace-switch) | Switch the branch of repositories in a workspace.             |
+| [polyrepo workspace commit](#polyrepo-workspace-commit) | Commit the changes for each repository in the workspace.      |
+| [polyrepo workspace push](#polyrepo-workspace-push)     | Push the changes for each repository in the workspace.        |
+| [polyrepo workspace pull](#polyrepo-workspace-pull)     | Pull the latest changes for each repository in the workspace. |
 | [polyrepo repo add](#polyrepo-repo-add)                 | Add a repository to the polyrepo workspace.                   |
 | [polyrepo repo remove](#polyrepo-repo-remove)           | Remove a repository from the polyrepo workspace.              |
 | [polyrepo repo sync](#polyrepo-repo-sync)               | Sync a repo with the remote.                                  |
@@ -85,6 +88,18 @@ Switch the branch of repositories in a workspace.
 | ------------ | ------- | -------- | ----------------------------------------- |
 | -n, --name   |         | **Yes**  | The name of the workspace to switch.      |
 | -b, --branch |         | **Yes**  | The branch to switch the repositories to. |
+
+### `polyrepo workspace commit`
+
+Commit the changes for each repository in the workspace.
+
+### `polyrepo workspace push`
+
+Push the changes for each repository in the workspace.
+
+### `polyrepo workspace pull`
+
+Pull the latest changes for each repository in the workspace.
 
 ### `polyrepo repo add`
 
