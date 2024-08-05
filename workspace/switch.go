@@ -57,7 +57,10 @@ var switchCommand = &cobra.Command{
 		})
 		if len(errs) > 0 {
 			multilog.Fatal("workspace.switch", "switch failed", map[string]interface{}{
-				"errors": errs,
+				"workspace": workspace.Name,
+				"path":      workspace.Path,
+				"branch":    branch,
+				"errors":    errs,
 			})
 		}
 

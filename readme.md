@@ -75,7 +75,7 @@ This command syncs the workspace by ensuring that each repository exists locally
 
 | Flag       | Default | Required | Description                        |
 | ---------- | ------- | -------- | ---------------------------------- |
-| -n, --name |         | No       | The name of the workspace to sync. |
+| -n, --name |         | **Yes**  | The name of the workspace to sync. |
 
 ### `polyrepo workspace switch`
 
