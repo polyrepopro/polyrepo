@@ -8,8 +8,8 @@ import (
 
 var root = &cobra.Command{
 	Use:   "poly",
-	Short: "Polyrepo CLI tool",
-	Long:  "Polyrepo CLI tool",
+	Short: "Manage polyrepos and workspaces like a boss 🚀.",
+	Long:  "Manage polyrepos and workspaces like a boss 🚀.",
 }
 
 func main() {
@@ -29,5 +29,4 @@ func main() {
 	}))
 
 	root.Execute()
-
 }

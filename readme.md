@@ -31,21 +31,23 @@ workspaces:
 
 ## Commands
 
-| Command                                                 | Description                                                   |
-| ------------------------------------------------------- | ------------------------------------------------------------- |
-| [polyrepo help](#polyrepo-help)                         | Show the help for the polyrepo CLI.                           |
-| [polyrepo version](#polyrepo-version)                   | Show the version of the polyrepo CLI.                         |
-| [polyrepo init](#polyrepo-init)                         | Initialize a new global `.polyrepo.yaml` configuration file.  |
-| [polyrepo workspace status](#polyrepo-workspace-status) | Show the status of the polyrepo workspace.                    |
-| [polyrepo workspace sync](#polyrepo-workspace-sync)     | Sync workspace with the remotes.                              |
-| [polyrepo workspace switch](#polyrepo-workspace-switch) | Switch the branch of repositories in a workspace.             |
-| [polyrepo workspace commit](#polyrepo-workspace-commit) | Commit the changes for each repository in the workspace.      |
-| [polyrepo workspace push](#polyrepo-workspace-push)     | Push the changes for each repository in the workspace.        |
-| [polyrepo workspace pull](#polyrepo-workspace-pull)     | Pull the latest changes for each repository in the workspace. |
-| [polyrepo repo add](#polyrepo-repo-add)                 | Add a repository to the polyrepo workspace.                   |
-| [polyrepo repo remove](#polyrepo-repo-remove)           | Remove a repository from the polyrepo workspace.              |
-| [polyrepo repo sync](#polyrepo-repo-sync)               | Sync a repo with the remote.                                  |
-| [polyrepo repo track](#polyrepo-repo-track)             | Adds the current working directory to the polyrepo workspace. |
+| Command                                                                   | Description                                                                 |
+| ------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| [polyrepo help](#polyrepo-help)                                           | Show the help for the polyrepo CLI.                                         |
+| [polyrepo version](#polyrepo-version)                                     | Show the version of the polyrepo CLI.                                       |
+| [polyrepo init](#polyrepo-init)                                           | Initialize a new global `.polyrepo.yaml` configuration file.                |
+| [polyrepo workspace run](#polyrepo-workspace-run)                         | Run a command(s) in each repository in the workspace and watch for changes. |
+| [polyrepo workspace status](#polyrepo-workspace-status)                   | Show the status of the polyrepo workspace.                                  |
+| [polyrepo workspace sync](#polyrepo-workspace-sync)                       | Sync workspace with the remotes.                                            |
+| [polyrepo workspace switch](#polyrepo-workspace-switch)                   | Switch the branch of repositories in a workspace.                           |
+| [polyrepo workspace commit](#polyrepo-workspace-commit)                   | Commit the changes for each repository in the workspace.                    |
+| [polyrepo workspace commit-and-push](#polyrepo-workspace-commit-and-push) | Commit the changes for each repository in the workspace and push.           |
+| [polyrepo workspace push](#polyrepo-workspace-push)                       | Push the changes for each repository in the workspace.                      |
+| [polyrepo workspace pull](#polyrepo-workspace-pull)                       | Pull the latest changes for each repository in the workspace.               |
+| [polyrepo repo add](#polyrepo-repo-add)                                   | Add a repository to the polyrepo workspace.                                 |
+| [polyrepo repo remove](#polyrepo-repo-remove)                             | Remove a repository from the polyrepo workspace.                            |
+| [polyrepo repo sync](#polyrepo-repo-sync)                                 | Sync a repo with the remote.                                                |
+| [polyrepo repo track](#polyrepo-repo-track)                               | Adds the current working directory to the polyrepo workspace.               |
 
 ### `polyrepo help`
 
@@ -66,9 +68,43 @@ Initialize a new global `.polyrepo.yaml` configuration file.
 | -p, --path | `~/.polyrepo.yaml` | **Yes**  | The path to save the `.polyrepo.yaml` file.       |
 | -u, --url  |                    | No       | A URL to download the `.polyrepo.yaml` file from. |
 
+### `polyrepo workspace run`
+
+Run a command(s) in each repository in the workspace and watch for changes.
+
+If changes are detected, the command(s) are restarted.
+
+![alt text](docs/Cursor-000215.gif)
+
+Example configuration with watches:
+
+```yaml
+workspaces:
+  - name: example
+    path: ~/workspace/polyrepo-example
+    repositories:
+      - url: git@github.com:polyrepopro/example-test-repo.git
+        branch: main
+        path: examples/example-test-repo
+        watches:
+          - cwd: ~/workspace/polyrepo/examples/example-test-repo
+            paths:
+              - "**/*.go"
+            commands:
+              - name: "run"
+                command:
+                  - "go"
+                  - "run"
+                  - "test/main.go"
+```
+
 ### `polyrepo workspace status`
 
 Show the status of the polyrepo workspace.
+
+| Flag            | Default | Required | Description                                                                   |
+| --------------- | ------- | -------- | ----------------------------------------------------------------------------- |
+| -w, --workspace |         | **Yes**  | The name of the workspace to show status for (will show all if not provided). |
 
 ### `polyrepo workspace sync`
 
@@ -76,22 +112,31 @@ Sync workspace with the remotes.
 
 This command syncs the workspace by ensuring that each repository exists locally.
 
-| Flag       | Default | Required | Description                        |
-| ---------- | ------- | -------- | ---------------------------------- |
-| -n, --name |         | **Yes**  | The name of the workspace to sync. |
+| Flag            | Default | Required | Description                        |
+| --------------- | ------- | -------- | ---------------------------------- |
+| -w, --workspace |         | **Yes**  | The name of the workspace to sync. |
 
 ### `polyrepo workspace switch`
 
 Switch the branch of repositories in a workspace.
 
-| Flag         | Default | Required | Description                               |
-| ------------ | ------- | -------- | ----------------------------------------- |
-| -n, --name   |         | **Yes**  | The name of the workspace to switch.      |
-| -b, --branch |         | **Yes**  | The branch to switch the repositories to. |
+| Flag            | Default | Required | Description                                    |
+| --------------- | ------- | -------- | ---------------------------------------------- |
+| -w, --workspace |         | **Yes**  | The name of the workspace to switch branch on. |
+| -b, --branch    |         | **Yes**  | The branch to switch the repositories to.      |
 
 ### `polyrepo workspace commit`
 
 Commit the changes for each repository in the workspace.
+
+| Flag            | Default | Required | Description                                  |
+| --------------- | ------- | -------- | -------------------------------------------- |
+| -w, --workspace |         | **Yes**  | The name of the workspace to commit for.     |
+| -m, --message   |         | **Yes**  | The message to commit the repositories with. |
+
+### `polyrepo workspace commit-and-push`
+
+Commit the changes for each repository in the workspace and push.
 
 ### `polyrepo workspace push`
 

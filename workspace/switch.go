@@ -8,8 +8,8 @@ import (
 )
 
 func init() {
-	switchCommand.Flags().StringP("name", "n", "", "The name of the workspace to update.")
-	switchCommand.MarkFlagRequired("name")
+	switchCommand.Flags().StringP("workspace", "w", "", "The name of the workspace to update.")
+	switchCommand.MarkFlagRequired("workspace")
 
 	switchCommand.Flags().StringP("branch", "b", "", "The branch to switch to.")
 	switchCommand.MarkFlagRequired("branch")
@@ -22,9 +22,9 @@ var switchCommand = &cobra.Command{
 	Short: "Switch the branch for each repository in the workspace.",
 	Long:  "Switch the branch for each repository in the workspace.",
 	Run: func(cmd *cobra.Command, args []string) {
-		name, err := cmd.Flags().GetString("name")
+		workspaceName, err := cmd.Flags().GetString("workspace")
 		if err != nil {
-			multilog.Fatal("workspace.switch", "failed to get name", map[string]interface{}{
+			multilog.Fatal("workspace.switch", "failed to get workspace", map[string]interface{}{
 				"error": err,
 			})
 		}
@@ -43,11 +43,11 @@ var switchCommand = &cobra.Command{
 			})
 		}
 
-		workspace, err := cfg.GetWorkspace(name)
+		workspace, err := cfg.GetWorkspace(workspaceName)
 		if err != nil {
-			multilog.Fatal("workspace.switch", "failed to get workspace", map[string]interface{}{
-				"name":  name,
-				"error": err,
+			multilog.Fatal("workspace.switch", "failed to get workspace from config", map[string]interface{}{
+				"workspace": workspaceName,
+				"error":     err,
 			})
 		}
 

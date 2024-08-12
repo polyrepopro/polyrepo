@@ -8,8 +8,8 @@ import (
 )
 
 func init() {
-	pullCommand.Flags().StringP("name", "n", "", "The name of the workspace to update.")
-	pullCommand.MarkFlagRequired("name")
+	pullCommand.Flags().StringP("workspace", "w", "", "The name of the workspace to get the latest changes for.")
+	pullCommand.MarkFlagRequired("workspace")
 
 	WorkspaceCommand.AddCommand(pullCommand)
 }
@@ -19,7 +19,7 @@ var pullCommand = &cobra.Command{
 	Short: "Pull the latest changes for each repository in the workspace.",
 	Long:  "Pull the latest changes for each repository in the workspace.",
 	Run: func(cmd *cobra.Command, args []string) {
-		name, err := cmd.Flags().GetString("name")
+		workspaceName, err := cmd.Flags().GetString("workspace")
 		if err != nil {
 			multilog.Fatal("workspace.switch", "failed to get name", map[string]interface{}{
 				"error": err,
@@ -33,11 +33,11 @@ var pullCommand = &cobra.Command{
 			})
 		}
 
-		workspace, err := cfg.GetWorkspace(name)
+		workspace, err := cfg.GetWorkspace(workspaceName)
 		if err != nil {
 			multilog.Fatal("workspace.switch", "failed to get workspace", map[string]interface{}{
-				"name":  name,
-				"error": err,
+				"workspace": workspace,
+				"error":     err,
 			})
 		}
 

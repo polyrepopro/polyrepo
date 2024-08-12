@@ -7,7 +7,7 @@ import (
 )
 
 func init() {
-	syncCommand.Flags().StringP("name", "n", "", "The name of the workspace to update.")
+	syncCommand.Flags().StringP("workspace", "w", "", "The name of the workspace to sync.")
 
 	WorkspaceCommand.AddCommand(syncCommand)
 }
@@ -17,7 +17,7 @@ var syncCommand = &cobra.Command{
 	Short: "Sync a workspace.",
 	Long:  "Sync a workspace by syncing all repositories.",
 	Run: func(cmd *cobra.Command, args []string) {
-		name, err := cmd.Flags().GetString("name")
+		workspaceName, err := cmd.Flags().GetString("workspace")
 		if err != nil {
 			multilog.Fatal("workspace.sync", "sync failed", map[string]interface{}{
 				"error": err,
@@ -25,7 +25,7 @@ var syncCommand = &cobra.Command{
 		}
 
 		msgs, err := workspaces.Sync(workspaces.SyncArgs{
-			Name: name,
+			Name: workspaceName,
 		})
 		if err != nil {
 			multilog.Fatal("workspace.sync", "sync failed", map[string]interface{}{
