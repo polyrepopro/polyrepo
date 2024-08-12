@@ -10,44 +10,25 @@ Polyrepo CLI is a command-line interface for the Polyrepo project. It allows you
 go install github.com/polyrepo/cli
 ```
 
-## Configuration
-
-Polyrepo workspaces are configured in a `.polyrepo.yaml` file which can be created by running `polyrepo workspace init`.
-
-An example `.polyrepo.yaml` file looks like this:
-
-```yaml
-workspaces:
-  - name: dev
-    path: ~/workspace/polyrepo-dev
-    repositories:
-      - url: git@github.com:polyrepopro/api.git
-        branch: main
-        path: pkg/api
-      - url: git@github.com:polyrepopro/cli.git
-        branch: main
-        path: pkg/cli
-```
-
 ## Commands
 
-| Command                                                                   | Description                                                                 |
-| ------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
-| [polyrepo help](#polyrepo-help)                                           | Show the help for the polyrepo CLI.                                         |
-| [polyrepo version](#polyrepo-version)                                     | Show the version of the polyrepo CLI.                                       |
-| [polyrepo init](#polyrepo-init)                                           | Initialize a new global `.polyrepo.yaml` configuration file.                |
-| [polyrepo workspace run](#polyrepo-workspace-run)                         | Run a command(s) in each repository in the workspace and watch for changes. |
-| [polyrepo workspace status](#polyrepo-workspace-status)                   | Show the status of the polyrepo workspace.                                  |
-| [polyrepo workspace sync](#polyrepo-workspace-sync)                       | Sync workspace with the remotes.                                            |
-| [polyrepo workspace switch](#polyrepo-workspace-switch)                   | Switch the branch of repositories in a workspace.                           |
-| [polyrepo workspace commit](#polyrepo-workspace-commit)                   | Commit the changes for each repository in the workspace.                    |
-| [polyrepo workspace commit-and-push](#polyrepo-workspace-commit-and-push) | Commit the changes for each repository in the workspace and push.           |
-| [polyrepo workspace push](#polyrepo-workspace-push)                       | Push the changes for each repository in the workspace.                      |
-| [polyrepo workspace pull](#polyrepo-workspace-pull)                       | Pull the latest changes for each repository in the workspace.               |
-| [polyrepo repo add](#polyrepo-repo-add)                                   | Add a repository to the polyrepo workspace.                                 |
-| [polyrepo repo remove](#polyrepo-repo-remove)                             | Remove a repository from the polyrepo workspace.                            |
-| [polyrepo repo sync](#polyrepo-repo-sync)                                 | Sync a repo with the remote.                                                |
-| [polyrepo repo track](#polyrepo-repo-track)                               | Adds the current working directory to the polyrepo workspace.               |
+| Command                                                                   | Description                                                       |
+| ------------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| [polyrepo help](#polyrepo-help)                                           | Show the help for the polyrepo CLI.                               |
+| [polyrepo version](#polyrepo-version)                                     | Show the version of the polyrepo CLI.                             |
+| [polyrepo init](#polyrepo-init)                                           | Initialize a new global `.polyrepo.yaml` configuration file.      |
+| [polyrepo workspace run](#polyrepo-workspace-run)                         | Run a command(s) in each repository and watch for changes.        |
+| [polyrepo workspace status](#polyrepo-workspace-status)                   | Show the status of the polyrepo workspace.                        |
+| [polyrepo workspace sync](#polyrepo-workspace-sync)                       | Sync workspace with the remotes.                                  |
+| [polyrepo workspace switch](#polyrepo-workspace-switch)                   | Switch the branch of repositories in a workspace.                 |
+| [polyrepo workspace commit](#polyrepo-workspace-commit)                   | Commit the changes for each repository in the workspace.          |
+| [polyrepo workspace commit-and-push](#polyrepo-workspace-commit-and-push) | Commit the changes for each repository in the workspace and push. |
+| [polyrepo workspace push](#polyrepo-workspace-push)                       | Push the changes for each repository in the workspace.            |
+| [polyrepo workspace pull](#polyrepo-workspace-pull)                       | Pull the latest changes for each repository in the workspace.     |
+| [polyrepo repo add](#polyrepo-repo-add)                                   | Add a repository to the polyrepo workspace.                       |
+| [polyrepo repo remove](#polyrepo-repo-remove)                             | Remove a repository from the polyrepo workspace.                  |
+| [polyrepo repo sync](#polyrepo-repo-sync)                                 | Sync a repo with the remote.                                      |
+| [polyrepo repo track](#polyrepo-repo-track)                               | Adds the current working directory to the polyrepo workspace.     |
 
 ### `polyrepo help`
 
@@ -161,3 +142,56 @@ Sync a repo with the remote.
 ### `polyrepo repo track`
 
 Adds the current working directory to the polyrepo workspace.
+
+## Configuration
+
+Polyrepo workspaces are configured in a `.polyrepo.yaml` file which can be created by running `polyrepo workspace init`.
+
+A simple example `.polyrepo.yaml` file looks like this:
+
+```yaml
+workspaces:
+  - name: dev
+    path: ~/workspace/polyrepo-dev
+    repositories:
+      - url: git@github.com:polyrepopro/api.git
+        branch: main
+        path: pkg/api
+      - url: git@github.com:polyrepopro/cli.git
+        branch: main
+        path: pkg/cli
+```
+
+### Schema
+
+#### []workspaces: Workspace
+
+| Field        | Type                  | Description                                 |
+| ------------ | --------------------- | ------------------------------------------- |
+| name         | string                | The name of the workspace.                  |
+| path         | string                | The path to the workspace.                  |
+| repositories | [[]Repo](#repository) | The repositories containedin the workspace. |
+
+#### []workspaces.[]repositories: Repository
+
+| Field   | Type              | Description                                  |
+| ------- | ----------------- | -------------------------------------------- |
+| url     | string            | The URL of the repository.                   |
+| branch  | string            | The branch to sync the repository to.        |
+| path    | string            | The path to the repository in the workspace. |
+| watches | [[]Watch](#watch) | The watches for the repository.              |
+
+#### []workspace.[]repository.[]watches: Watch
+
+| Field    | Type                  | Description                                    |
+| -------- | --------------------- | ---------------------------------------------- |
+| cwd      | string                | The current working directory to watch.        |
+| paths    | []string              | The paths to watch for changes.                |
+| commands | [[]Command](#command) | The commands to run when changes are detected. |
+
+#### []workspace.[]repository.[]watches.[]commands: Command
+
+| Field   | Type     | Description              |
+| ------- | -------- | ------------------------ |
+| name    | string   | The name of the command. |
+| command | []string | The command to run.      |
