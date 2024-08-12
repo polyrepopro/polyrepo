@@ -164,15 +164,15 @@ workspaces:
 
 ### Schema
 
-#### []workspaces: Workspace
+#### Workspace
 
-| Field        | Type                  | Description                                 |
-| ------------ | --------------------- | ------------------------------------------- |
-| name         | string                | The name of the workspace.                  |
-| path         | string                | The path to the workspace.                  |
-| repositories | [[]Repo](#repository) | The repositories containedin the workspace. |
+| Field        | Type                        | Description                                 |
+| ------------ | --------------------------- | ------------------------------------------- |
+| name         | string                      | The name of the workspace.                  |
+| path         | string                      | The path to the workspace.                  |
+| repositories | [[]Repository](#repository) | The repositories containedin the workspace. |
 
-#### []workspaces.[]repositories: Repository
+#### Repository
 
 | Field   | Type              | Description                                  |
 | ------- | ----------------- | -------------------------------------------- |
@@ -181,7 +181,7 @@ workspaces:
 | path    | string            | The path to the repository in the workspace. |
 | watches | [[]Watch](#watch) | The watches for the repository.              |
 
-#### []workspace.[]repository.[]watches: Watch
+#### Watch
 
 | Field    | Type                  | Description                                    |
 | -------- | --------------------- | ---------------------------------------------- |
@@ -189,7 +189,7 @@ workspaces:
 | paths    | []string              | The paths to watch for changes.                |
 | commands | [[]Command](#command) | The commands to run when changes are detected. |
 
-#### []workspace.[]repository.[]watches.[]commands: Command
+#### Command
 
 | Field   | Type     | Description              |
 | ------- | -------- | ------------------------ |
