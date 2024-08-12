@@ -191,6 +191,15 @@ workspaces:
 
 #### Command
 
+The command is an array of strings that make up the command to run:
+
+```yaml
+command:
+  - "go"
+  - "run"
+  - "main.go"
+```
+
 | Field   | Type     | Description              |
 | ------- | -------- | ------------------------ |
 | name    | string   | The name of the command. |
