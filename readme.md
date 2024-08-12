@@ -162,6 +162,67 @@ workspaces:
         path: pkg/cli
 ```
 
+A more complex example:
+
+```yaml
+workspaces:
+  - name: dev
+    path: ~/workspace/polyrepo-dev
+    repositories:
+      - url: git@github.com:polyrepopro/api.git
+        remote: origin
+        branch: main
+        path: pkg/api
+        hooks:
+          clone:
+            - command:
+                - go
+                - mod
+                - download
+          pre_push:
+            - command:
+                - go
+                - mod
+                - verify
+        watches:
+          - paths:
+              - "**/*.go"
+            commands:
+              - name: "run"
+                command:
+                  - "go"
+                  - "run"
+                  - "main.go"
+      - url: git@github.com:polyrepopro/cli.git
+        branch: main
+        path: pkg/cli
+        hooks:
+          clone:
+            - command:
+                - go
+                - mod
+                - download
+          pull:
+            - command:
+                - go
+                - mod
+                - download
+          pre_push:
+            - command:
+                - go
+                - mod
+                - verify
+        watches:
+          - paths:
+              - "**/*.go"
+            commands:
+              - name: "run"
+                command:
+                  - "go"
+                  - "run"
+                  - "main.go"
+```
+
 ### Schema
 
 #### Workspace
