@@ -120,9 +120,9 @@ workspaces:
 
 Show the status of the polyrepo workspace.
 
-| Flag            | Default | Required | Description                                                |
-| --------------- | ------- | -------- | ---------------------------------------------------------- |
-| -w, --workspace |         |          | Optional. The name of the workspace to show the status of. |
+| Flag            | Default | Required | Description                                             |
+| --------------- | ------- | -------- | ------------------------------------------------------- |
+| -w, --workspace |         | Optional | The name of the workspace to show the status of or all. |
 
 ```bash
 go workspace status
