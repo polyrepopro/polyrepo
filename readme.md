@@ -9,7 +9,7 @@ Polyrepo CLI is a command-line interface for the Polyrepo project. It allows you
 ## Installation
 
 ```bash
-go install github.com/polyrepopro/cli@latest
+go install github.com/polyrepopro/polyrepo@latest
 ```
 
 ## Getting Started

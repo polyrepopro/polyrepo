@@ -4,8 +4,7 @@ go 1.22.0
 
 require (
 	github.com/mateothegreat/go-multilog v0.0.0-20240827064703-d95ef77859ba
-	github.com/polyrepopro/api v0.0.0-20240902182858-d9de44de8a96
-	github.com/polyrepopro/cli v0.0.0-20240902182637-5bacf592c163
+	github.com/polyrepopro/api v0.0.0-20240902215601-29179a9fa57d
 	github.com/spf13/cobra v1.8.1
 )
 

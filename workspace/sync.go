@@ -7,15 +7,13 @@ import (
 )
 
 func init() {
-	syncCommand.Flags().StringP("workspace", "w", "", "The name of the workspace to sync.")
-
 	WorkspaceCommand.AddCommand(syncCommand)
 }
 
 var syncCommand = &cobra.Command{
 	Use:   "sync",
-	Short: "Sync a workspace.",
-	Long:  "Sync a workspace by syncing all repositories.",
+	Short: "Sync a workspace by syncing all repositories",
+	Long:  "Sync a workspace by syncing all repositories",
 	Run: func(cmd *cobra.Command, args []string) {
 		workspaceName, err := cmd.Flags().GetString("workspace")
 		if err != nil {

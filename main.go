@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/mateothegreat/go-multilog/multilog"
-	"github.com/polyrepopro/cli/workspace"
+	"github.com/polyrepopro/polyrepo/workspace"
 	"github.com/spf13/cobra"
 )
 
@@ -14,8 +14,8 @@ var root = &cobra.Command{
 
 func main() {
 	root.AddCommand(workspace.WorkspaceCommand)
-	root.PersistentFlags().StringP("config", "c", "", "The path to the polyrepo config file.")
-	root.PersistentFlags().BoolP("verbose", "v", false, "Output detailed logs.")
+	root.PersistentFlags().StringP("config", "c", "", "the path to the polyrepo config file")
+	root.PersistentFlags().BoolP("verbose", "v", false, "output detailed logs")
 
 	logLevel := multilog.INFO
 

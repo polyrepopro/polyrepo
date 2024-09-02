@@ -8,9 +8,6 @@ import (
 )
 
 func init() {
-	switchCommand.Flags().StringP("workspace", "w", "", "The name of the workspace to update.")
-	switchCommand.MarkFlagRequired("workspace")
-
 	switchCommand.Flags().StringP("branch", "b", "", "The branch to switch to.")
 	switchCommand.MarkFlagRequired("branch")
 
@@ -19,8 +16,8 @@ func init() {
 
 var switchCommand = &cobra.Command{
 	Use:   "switch",
-	Short: "Switch the branch for each repository in the workspace.",
-	Long:  "Switch the branch for each repository in the workspace.",
+	Short: "switch the branch for each repository in the workspace",
+	Long:  "switch the branch for each repository in the workspace",
 	Run: func(cmd *cobra.Command, args []string) {
 		workspaceName, err := cmd.Flags().GetString("workspace")
 		if err != nil {

@@ -5,7 +5,7 @@ import (
 
 	"github.com/mateothegreat/go-multilog/multilog"
 	"github.com/polyrepopro/api/config"
-	"github.com/polyrepopro/cli/util"
+	"github.com/polyrepopro/polyrepo/util"
 	"github.com/spf13/cobra"
 )
 

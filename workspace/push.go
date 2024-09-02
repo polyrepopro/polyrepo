@@ -3,19 +3,19 @@ package workspace
 import (
 	"github.com/mateothegreat/go-multilog/multilog"
 	"github.com/polyrepopro/api/workspaces"
-	"github.com/polyrepopro/cli/util"
+	"github.com/polyrepopro/polyrepo/util"
 	"github.com/spf13/cobra"
 )
 
 func init() {
-	pushCommand.Flags().StringP("workspace", "w", "", "The name of the workspace to push changes for.")
+	pushCommand.Flags().StringP("workspace", "w", "", "isolate to a specific workspace")
 	WorkspaceCommand.AddCommand(pushCommand)
 }
 
 var pushCommand = &cobra.Command{
 	Use:   "push",
-	Short: "Push changes for each repository in the workspace.",
-	Long:  "Push changes for each repository in the workspace.",
+	Short: "push changes for each repository in the workspace",
+	Long:  "push changes for each repository in the workspace",
 	Run: func(cmd *cobra.Command, args []string) {
 		setup, err := Setup("workspace.push", util.GetArg[string](cmd, "workspace"), util.GetArg[string](cmd, "config"))
 		if err != nil {

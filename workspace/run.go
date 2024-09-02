@@ -8,14 +8,13 @@ import (
 )
 
 func init() {
-	runCommand.Flags().StringP("workspace", "w", "", "The name of the workspace to update.")
 	WorkspaceCommand.AddCommand(runCommand)
 }
 
 var runCommand = &cobra.Command{
 	Use:   "run",
-	Short: "Run the commands for each repository in the workspace.",
-	Long:  "Run the commands for each repository in the workspace.",
+	Short: "run the commands for each repository in the workspace",
+	Long:  "run the commands for each repository in the workspace",
 	Run: func(cmd *cobra.Command, args []string) {
 		config, err := config.GetRelativeConfig()
 		if err != nil {

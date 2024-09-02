@@ -4,19 +4,19 @@ import (
 	"github.com/mateothegreat/go-multilog/multilog"
 	"github.com/polyrepopro/api/config"
 	"github.com/polyrepopro/api/workspaces"
-	"github.com/polyrepopro/cli/util"
+	"github.com/polyrepopro/polyrepo/util"
 	"github.com/spf13/cobra"
 )
 
 func init() {
-	pullCommand.Flags().StringP("workspace", "w", "", "The name of the workspace to get the latest changes for.")
+	pullCommand.Flags().StringP("workspace", "w", "", "isolate to a specific workspace")
 	WorkspaceCommand.AddCommand(pullCommand)
 }
 
 var pullCommand = &cobra.Command{
 	Use:   "pull",
-	Short: "Pull the latest changes for each repository in the workspace.",
-	Long:  "Pull the latest changes for each repository in the workspace.",
+	Short: "pull the latest changes for each repository in the workspace",
+	Long:  "pull the latest changes for each repository in the workspace",
 	Run: func(cmd *cobra.Command, args []string) {
 		cfg, err := config.GetConfig(util.GetArg[string](cmd, "config"))
 		if err != nil {
@@ -28,18 +28,11 @@ var pullCommand = &cobra.Command{
 		workspaceName := util.GetArg[string](cmd, "workspace")
 		if workspaceName == "" {
 			for _, workspace := range *cfg.Workspaces {
-				errs := workspaces.Pull(workspaces.PullArgs{
+				workspaces.Pull(workspaces.PullArgs{
 					Workspace: &workspace,
 				})
-				if len(errs) > 0 {
-					multilog.Fatal("workspace.pull", "pull failed", map[string]interface{}{
-						"workspace": workspace.Name,
-						"path":      workspace.Path,
-						"errors":    errs,
-					})
-				}
 
-				multilog.Info("workspace.pull", "pulled", map[string]interface{}{
+				multilog.Info("workspace.pull", "pull completed", map[string]interface{}{
 					"workspace":    workspace.Name,
 					"path":         workspace.Path,
 					"repositories": len(*workspace.Repositories),

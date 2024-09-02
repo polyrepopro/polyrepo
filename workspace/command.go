@@ -8,3 +8,7 @@ var WorkspaceCommand = &cobra.Command{
 	Long:  "Manage workspaces.",
 	Args:  cobra.ExactArgs(1),
 }
+
+func init() {
+	WorkspaceCommand.Flags().StringP("workspace", "w", "", "isolate to a specific workspace")
+}
