@@ -8,10 +8,10 @@ import (
 )
 
 func init() {
-	initCommand.Flags().StringP("path", "p", "", "The path to the workspace.")
+	initCommand.Flags().StringP("path", "p", "", "the path to save the polyrepo config to")
 	initCommand.MarkFlagRequired("path")
 
-	initCommand.Flags().StringP("url", "u", "", "The URL to the workspace.")
+	initCommand.Flags().StringP("url", "u", "", "the URL to the polyrepo config to source from")
 
 	root.AddCommand(initCommand)
 }
