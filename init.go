@@ -18,8 +18,8 @@ func init() {
 
 var initCommand = &cobra.Command{
 	Use:   "init",
-	Short: "Initialize a new workspace.",
-	Long:  "Apply tags to subscriptions.",
+	Short: "Initialize a new polyrepo config.",
+	Long:  "Initialize a new polyrepo config.",
 	Run: func(cmd *cobra.Command, args []string) {
 		path, err := cmd.Flags().GetString("path")
 		if err != nil {
