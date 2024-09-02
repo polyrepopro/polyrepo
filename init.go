@@ -9,9 +9,9 @@ import (
 )
 
 func init() {
+	root.AddCommand(initCommand)
 	initCommand.Flags().StringP("path", "p", "", "the path to save the polyrepo config to")
 	initCommand.Flags().StringP("url", "u", "", "the URL to the polyrepo config to source from")
-	root.AddCommand(initCommand)
 }
 
 var initCommand = &cobra.Command{

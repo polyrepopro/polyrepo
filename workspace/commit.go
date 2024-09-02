@@ -1,6 +1,8 @@
 package workspace
 
 import (
+	"sync"
+
 	"github.com/mateothegreat/go-multilog/multilog"
 	"github.com/polyrepopro/api/workspaces"
 	"github.com/polyrepopro/cli/util"
@@ -37,14 +39,20 @@ var commitCommand = &cobra.Command{
 			})
 		}
 
+		var wg sync.WaitGroup
 		for _, repo := range result {
-			for _, msg := range *repo.Messages {
-				multilog.Info("workspace.commit", "committed changes", map[string]interface{}{
-					"change": msg,
-					"repo":   repo.Path,
-				})
-			}
+			wg.Add(1)
+			go func() {
+				defer wg.Done()
+				for _, msg := range *repo.Messages {
+					multilog.Info("workspace.commit", "committed changes", map[string]interface{}{
+						"change": msg,
+						"repo":   repo.Path,
+					})
+				}
+			}()
 		}
+		wg.Wait()
 
 		multilog.Info("workspace.commit", "committed all changes", map[string]interface{}{
 			"workspace":    setup.Workspace.Name,
