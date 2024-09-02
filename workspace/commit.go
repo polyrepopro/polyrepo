@@ -3,13 +3,13 @@ package workspace
 import (
 	"github.com/mateothegreat/go-multilog/multilog"
 	"github.com/polyrepopro/api/workspaces"
+	"github.com/polyrepopro/cli/util"
 	"github.com/spf13/cobra"
 )
 
 func init() {
 	commitCommand.Flags().StringP("workspace", "w", "", "The name of the workspace to update.")
-	commitCommand.MarkFlagRequired("workspace")
-
+	commitCommand.Flags().StringP("message", "m", "", "The message to commit with.")
 	WorkspaceCommand.AddCommand(commitCommand)
 }
 
@@ -18,14 +18,7 @@ var commitCommand = &cobra.Command{
 	Short: "Commit the changes for each repository in the workspace.",
 	Long:  "Commit the changes for each repository in the workspace.",
 	Run: func(cmd *cobra.Command, args []string) {
-		workspaceName, err := cmd.Flags().GetString("workspace")
-		if err != nil {
-			multilog.Fatal("workspace.commit", "failed to get workspace", map[string]interface{}{
-				"error": err,
-			})
-		}
-
-		setup, err := Setup("workspace.commit", workspaceName)
+		setup, err := Setup("workspace.commit", util.GetArg[string](cmd, "workspace"), util.GetArg[string](cmd, "config"))
 		if err != nil {
 			multilog.Fatal("workspace.commit", "failed to setup", map[string]interface{}{
 				"error": err,
@@ -34,6 +27,7 @@ var commitCommand = &cobra.Command{
 
 		msgs, errs := workspaces.Commit(workspaces.CommitArgs{
 			Workspace: setup.Workspace,
+			Message:   util.GetArg[string](cmd, "message"),
 		})
 		if len(errs) > 0 {
 			multilog.Fatal("workspace.commit", "commit failed", map[string]interface{}{
@@ -43,7 +37,7 @@ var commitCommand = &cobra.Command{
 			})
 		}
 
-		multilog.Info("workspace.commit", "committed", map[string]interface{}{
+		multilog.Info("workspace.commit", "committed all changes", map[string]interface{}{
 			"workspace":    setup.Workspace.Name,
 			"path":         setup.Workspace.Path,
 			"repositories": len(*setup.Workspace.Repositories),

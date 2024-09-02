@@ -10,18 +10,30 @@ type SetupResult struct {
 	Workspace *config.Workspace
 }
 
-func Setup(group string, name string) (SetupResult, error) {
-	cfg, err := config.GetRelativeConfig()
+func Setup(group string, workspaceName string, configPath string) (SetupResult, error) {
+	cfg, err := config.GetConfig(configPath)
 	if err != nil {
 		multilog.Fatal(group, "failed to get config", map[string]interface{}{
 			"error": err,
 		})
 	}
 
-	workspace, err := cfg.GetWorkspace(name)
+	if workspaceName == "" && cfg.Current != "" {
+		workspaceName = cfg.Current
+	} else {
+		if len(*cfg.Workspaces) > 0 {
+			workspaceName = (*cfg.Workspaces)[0].Name
+		} else {
+			multilog.Fatal(group, "no workspaces found in config", map[string]interface{}{
+				"error": err,
+			})
+		}
+	}
+
+	workspace, err := cfg.GetWorkspace(workspaceName)
 	if err != nil {
 		multilog.Fatal(group, "failed to get workspace", map[string]interface{}{
-			"name":  name,
+			"name":  workspaceName,
 			"error": err,
 		})
 	}

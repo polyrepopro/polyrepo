@@ -4,13 +4,12 @@ import (
 	"github.com/mateothegreat/go-multilog/multilog"
 	"github.com/polyrepopro/api/config"
 	"github.com/polyrepopro/api/workspaces"
+	"github.com/polyrepopro/cli/util"
 	"github.com/spf13/cobra"
 )
 
 func init() {
 	pullCommand.Flags().StringP("workspace", "w", "", "The name of the workspace to get the latest changes for.")
-	pullCommand.MarkFlagRequired("workspace")
-
 	WorkspaceCommand.AddCommand(pullCommand)
 }
 
@@ -19,23 +18,17 @@ var pullCommand = &cobra.Command{
 	Short: "Pull the latest changes for each repository in the workspace.",
 	Long:  "Pull the latest changes for each repository in the workspace.",
 	Run: func(cmd *cobra.Command, args []string) {
-		workspaceName, err := cmd.Flags().GetString("workspace")
+		cfg, err := config.GetConfig(util.GetArg[string](cmd, "config"))
 		if err != nil {
-			multilog.Fatal("workspace.switch", "failed to get name", map[string]interface{}{
+			multilog.Fatal("workspace.pull", "failed to get config", map[string]interface{}{
 				"error": err,
 			})
 		}
 
-		cfg, err := config.GetRelativeConfig()
+		workspace, err := cfg.GetWorkspace(util.GetArg[string](cmd, "workspace"))
 		if err != nil {
-			multilog.Fatal("workspace.switch", "failed to get config", map[string]interface{}{
-				"error": err,
-			})
-		}
-
-		workspace, err := cfg.GetWorkspace(workspaceName)
-		if err != nil {
-			multilog.Fatal("workspace.switch", "failed to get workspace", map[string]interface{}{
+			multilog.Fatal("workspace.pull", "failed to get workspace", map[string]interface{}{
+				"config":    cfg.Path,
 				"workspace": workspace,
 				"error":     err,
 			})

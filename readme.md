@@ -1,13 +1,40 @@
 # Polyrepo CLI
 
-Polyrepo is a tool for managing polyrepo workspaces like a boss.
+> Polyrepo is a tool for managing polyrepo workspaces like a boss.
+>
+> Keep your local and remote repositories in sync, commit and push changes to multiple repositories with a single command, and more.
 
 Polyrepo CLI is a command-line interface for the Polyrepo project. It allows you to manage your polyrepo workspace and its repositories.
 
 ## Installation
 
 ```bash
-go install github.com/polyrepo/cli
+go install github.com/polyrepopro/cli@latest
+```
+
+## Getting Started
+
+```bash
+polyrepo init
+```
+
+### Commiting & Pushing Changes
+
+```bash
+polyrepo workspace commit --workspace dev --message "Test commit @ $(date)"
+polyrepo workspace push --workspace dev
+```
+
+You can also specify a config file and/or workspace name to be explicit:
+
+```bash
+polyrepo workspace --config ~/workspace/nvr.ai/.polyrepo.yaml commit --workspace dev --message "Test commit @ $(date)"
+
+2024/09/02 11:39:29 [INFO] workspace.commit: committed map[messages:[{} {}] path:~/workspace/nvr.ai repositories:2 workspace:dev]
+
+polyrepo workspace --config ~/workspace/nvr.ai/.polyrepo.yaml push --workspace dev
+
+2024/09/02 11:40:40 [INFO] workspace.push: pushed changes for all repositories map[path:~/workspace/nvr.ai repositories:2 workspace:dev]
 ```
 
 ## Commands

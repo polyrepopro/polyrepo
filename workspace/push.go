@@ -3,6 +3,7 @@ package workspace
 import (
 	"github.com/mateothegreat/go-multilog/multilog"
 	"github.com/polyrepopro/api/workspaces"
+	"github.com/polyrepopro/cli/util"
 	"github.com/spf13/cobra"
 )
 
@@ -18,14 +19,7 @@ var pushCommand = &cobra.Command{
 	Short: "Push changes for each repository in the workspace.",
 	Long:  "Push changes for each repository in the workspace.",
 	Run: func(cmd *cobra.Command, args []string) {
-		workspaceName, err := cmd.Flags().GetString("workspace")
-		if err != nil {
-			multilog.Fatal("workspace.switch", "failed to get name", map[string]interface{}{
-				"error": err,
-			})
-		}
-
-		setup, err := Setup("workspace.push", workspaceName)
+		setup, err := Setup("workspace.push", util.GetArg[string](cmd, "workspace"), util.GetArg[string](cmd, "config"))
 		if err != nil {
 			multilog.Fatal("workspace.push", "failed to setup", map[string]interface{}{
 				"error": err,
