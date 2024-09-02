@@ -25,30 +25,52 @@ var pullCommand = &cobra.Command{
 			})
 		}
 
-		workspace, err := cfg.GetWorkspace(util.GetArg[string](cmd, "workspace"))
-		if err != nil {
-			multilog.Fatal("workspace.pull", "failed to get workspace", map[string]interface{}{
-				"config":    cfg.Path,
-				"workspace": workspace,
-				"error":     err,
+		workspaceName := util.GetArg[string](cmd, "workspace")
+		if workspaceName == "" {
+			for _, workspace := range *cfg.Workspaces {
+				errs := workspaces.Pull(workspaces.PullArgs{
+					Workspace: &workspace,
+				})
+				if len(errs) > 0 {
+					multilog.Fatal("workspace.pull", "pull failed", map[string]interface{}{
+						"workspace": workspace.Name,
+						"path":      workspace.Path,
+						"errors":    errs,
+					})
+				}
+
+				multilog.Info("workspace.pull", "pulled", map[string]interface{}{
+					"workspace":    workspace.Name,
+					"path":         workspace.Path,
+					"repositories": len(*workspace.Repositories),
+				})
+			}
+		} else {
+			workspace, err := cfg.GetWorkspace(workspaceName)
+			if err != nil {
+				multilog.Fatal("workspace.pull", "failed to get workspace", map[string]interface{}{
+					"config":    cfg.Path,
+					"workspace": workspace,
+					"error":     err,
+				})
+			}
+
+			errs := workspaces.Pull(workspaces.PullArgs{
+				Workspace: workspace,
+			})
+			if len(errs) > 0 {
+				multilog.Fatal("workspace.pull", "pull failed", map[string]interface{}{
+					"workspace": workspace.Name,
+					"path":      workspace.Path,
+					"errors":    errs,
+				})
+			}
+
+			multilog.Info("workspace.pull", "pulled", map[string]interface{}{
+				"workspace":    workspace.Name,
+				"path":         workspace.Path,
+				"repositories": len(*workspace.Repositories),
 			})
 		}
-
-		errs := workspaces.Pull(workspaces.PullArgs{
-			Workspace: workspace,
-		})
-		if len(errs) > 0 {
-			multilog.Fatal("workspace.pull", "pull failed", map[string]interface{}{
-				"workspace": workspace.Name,
-				"path":      workspace.Path,
-				"errors":    errs,
-			})
-		}
-
-		multilog.Info("workspace.pull", "pulled", map[string]interface{}{
-			"workspace":    workspace.Name,
-			"path":         workspace.Path,
-			"repositories": len(*workspace.Repositories),
-		})
 	},
 }

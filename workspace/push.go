@@ -9,8 +9,6 @@ import (
 
 func init() {
 	pushCommand.Flags().StringP("workspace", "w", "", "The name of the workspace to push changes for.")
-	pushCommand.MarkFlagRequired("workspace")
-
 	WorkspaceCommand.AddCommand(pushCommand)
 }
 

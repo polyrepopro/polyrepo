@@ -25,7 +25,7 @@ var commitCommand = &cobra.Command{
 			})
 		}
 
-		msgs, errs := workspaces.Commit(workspaces.CommitArgs{
+		result, errs := workspaces.Commit(workspaces.CommitArgs{
 			Workspace: setup.Workspace,
 			Message:   util.GetArg[string](cmd, "message"),
 		})
@@ -37,11 +37,19 @@ var commitCommand = &cobra.Command{
 			})
 		}
 
+		for _, repo := range result {
+			for _, msg := range *repo.Messages {
+				multilog.Info("workspace.commit", "committed changes", map[string]interface{}{
+					"change": msg,
+					"repo":   repo.Path,
+				})
+			}
+		}
+
 		multilog.Info("workspace.commit", "committed all changes", map[string]interface{}{
 			"workspace":    setup.Workspace.Name,
 			"path":         setup.Workspace.Path,
 			"repositories": len(*setup.Workspace.Repositories),
-			"messages":     msgs,
 		})
 	},
 }
