@@ -292,3 +292,7 @@ command:
 | ------- | -------- | ------------------------ |
 | name    | string   | The name of the command. |
 | command | []string | The command to run.      |
+
+---
+
+Happy multi-repo hacking! ✨
