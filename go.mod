@@ -1,4 +1,4 @@
-module github.com/polyrepopro/polyrepopro
+module github.com/polyrepopro/polyrepo
 
 go 1.22.0
 
