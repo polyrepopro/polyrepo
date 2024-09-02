@@ -1,9 +1,10 @@
 module github.com/polyrepopro/polyrepo
 
-go 1.22.0
+go 1.23.0
 
 require (
 	github.com/mateothegreat/go-multilog v0.0.0-20240827064703-d95ef77859ba
+	github.com/mateothegreat/go-util v0.0.0-20240812031932-d120d349cd20
 	github.com/polyrepopro/api v0.0.0-20240902215601-29179a9fa57d
 	github.com/spf13/cobra v1.8.1
 )
@@ -31,7 +32,6 @@ require (
 	github.com/jbenet/go-context v0.0.0-20150711004518-d14ea06fba99 // indirect
 	github.com/joho/godotenv v1.5.1 // indirect
 	github.com/kevinburke/ssh_config v1.2.0 // indirect
-	github.com/mateothegreat/go-util v0.0.0-20240812031932-d120d349cd20 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/pjbgf/sha1cd v0.3.0 // indirect

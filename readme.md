@@ -122,7 +122,19 @@ Show the status of the polyrepo workspace.
 
 | Flag            | Default | Required | Description                                                                   |
 | --------------- | ------- | -------- | ----------------------------------------------------------------------------- |
-| -w, --workspace |         | **Yes**  | The name of the workspace to show status for (will show all if not provided). |
+| -w, --workspace |         |          | The name of the workspace to show status for (will show all if not provided). |
+
+```bash
+go workspace status
+```
+
+Example output:
+
+```bash
+2024/09/02 17:44:05 [INFO] dev: ingester map[dirty:true message:pending changes name:ingester path:~/workspace/nvr.ai/pkg/ingester]
+2024/09/02 17:44:05 [INFO] dev: streamer map[dirty:true message:pending changes name:streamer path:~/workspace/nvr.ai/pkg/go-streamer]
+2024/09/02 17:44:06 [INFO] workspace.status: summary map[dirty:2 repositories:10 workspaces:1]
+```
 
 ### `polyrepo workspace sync`
 
@@ -134,14 +146,14 @@ This command syncs the workspace by ensuring that each repository exists locally
 | --------------- | ------- | -------- | ---------------------------------- |
 | -w, --workspace |         | **Yes**  | The name of the workspace to sync. |
 
-### `polyrepo workspace switch`
+### `polyrepo workspace checkout`
 
-Switch the branch of repositories in a workspace.
+Checkout a branch across all repositories in a workspace.
 
-| Flag            | Default | Required | Description                                    |
-| --------------- | ------- | -------- | ---------------------------------------------- |
-| -w, --workspace |         | **Yes**  | The name of the workspace to switch branch on. |
-| -b, --branch    |         | **Yes**  | The branch to switch the repositories to.      |
+| Flag            | Default | Required | Description                                      |
+| --------------- | ------- | -------- | ------------------------------------------------ |
+| -w, --workspace |         |          | The name of the workspace to checkout branch on. |
+| -b, --branch    |         | **Yes**  | The branch to checkout the repositories to.      |
 
 ### `polyrepo workspace commit`
 

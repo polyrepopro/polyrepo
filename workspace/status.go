@@ -48,7 +48,7 @@ var statusCommand = &cobra.Command{
 					}
 					if status.Dirty {
 						dirty++
-						multilog.Info("workspace.status", repo.Name, map[string]interface{}{
+						multilog.Info(w.Name, repo.Name, map[string]interface{}{
 							"path":    filepath.Join(w.Path, repo.Path),
 							"name":    repo.Name,
 							"dirty":   true,
