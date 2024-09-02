@@ -3,16 +3,14 @@ package main
 import (
 	"log"
 
+	"github.com/mateothegreat/go-multilog/multilog"
 	"github.com/polyrepopro/api/workspaces"
 	"github.com/spf13/cobra"
 )
 
 func init() {
 	initCommand.Flags().StringP("path", "p", "", "the path to save the polyrepo config to")
-	initCommand.MarkFlagRequired("path")
-
 	initCommand.Flags().StringP("url", "u", "", "the URL to the polyrepo config to source from")
-
 	root.AddCommand(initCommand)
 }
 
@@ -39,6 +37,8 @@ var initCommand = &cobra.Command{
 			log.Fatalf("Failed to init workspace: %v", err)
 		}
 
-		log.Printf("Initialized workspace: %v", cfg.Path)
+		multilog.Info("init", "workspace initialized", map[string]interface{}{
+			"path": cfg.Path,
+		})
 	},
 }

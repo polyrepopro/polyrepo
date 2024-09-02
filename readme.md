@@ -18,9 +18,15 @@ go install github.com/polyrepopro/cli@latest
 polyrepo init
 ```
 
-This will create a `.polyrepo.yaml` file in your home directory with a default configuration.
+This will create a `.polyrepo.yaml` file in your home directory with a default configuration (if you do not pass a path with `-p`).
 
 You can then add your repositories and workspaces to the configuration file.
+
+> Did you know you can have `polyrepo` download the config file from a URL? Just pass the `-u` flag with a URL to a config file!
+>
+> Try it now: `polyrepo init -u https://raw.githubusercontent.com/polyrepopro/cli/main/.polyrepo.yaml`
+>
+> This will download the config file from the URL and save it to the path you pass with `-p` or `~/.polyrepo.yaml` if not specified.
 
 ### Commiting & Pushing Changes
 
