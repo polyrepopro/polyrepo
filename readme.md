@@ -18,6 +18,10 @@ go install github.com/polyrepopro/cli@latest
 polyrepo init
 ```
 
+This will create a `.polyrepo.yaml` file in your home directory with a default configuration.
+
+You can then add your repositories and workspaces to the configuration file.
+
 ### Commiting & Pushing Changes
 
 ```bash
