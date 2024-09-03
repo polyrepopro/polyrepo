@@ -10,7 +10,7 @@
 /_/            /____/         /_/
 ```
 
-> 🤙 **Simplify. Streamline.** <https://polyrepopro.com>
+> 🤙 **Simplify. Streamline.** <https://polyrepo.pro>
 
 The way we organize our codebases can significantly impact our productivity, collaboration, and overall happiness.
 
