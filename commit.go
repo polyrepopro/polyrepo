@@ -1,4 +1,4 @@
-package workspace
+package main
 
 import (
 	"sync"
@@ -12,7 +12,7 @@ import (
 func init() {
 	commitCommand.Flags().StringP("workspace", "w", "", "The name of the workspace to update.")
 	commitCommand.Flags().StringP("message", "m", "", "The message to commit with.")
-	WorkspaceCommand.AddCommand(commitCommand)
+	root.AddCommand(commitCommand)
 }
 
 var commitCommand = &cobra.Command{

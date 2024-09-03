@@ -1,4 +1,4 @@
-package workspace
+package main
 
 import (
 	"github.com/mateothegreat/go-multilog/multilog"

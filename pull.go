@@ -1,4 +1,4 @@
-package workspace
+package main
 
 import (
 	"github.com/mateothegreat/go-multilog/multilog"
@@ -10,7 +10,7 @@ import (
 
 func init() {
 	pullCommand.Flags().StringP("workspace", "w", "", "isolate to a specific workspace")
-	WorkspaceCommand.AddCommand(pullCommand)
+	root.AddCommand(pullCommand)
 }
 
 var pullCommand = &cobra.Command{

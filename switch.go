@@ -1,4 +1,4 @@
-package workspace
+package main
 
 import (
 	"github.com/mateothegreat/go-multilog/multilog"
@@ -10,8 +10,7 @@ import (
 func init() {
 	switchCommand.Flags().StringP("branch", "b", "", "The branch to switch to.")
 	switchCommand.MarkFlagRequired("branch")
-
-	WorkspaceCommand.AddCommand(switchCommand)
+	root.AddCommand(switchCommand)
 }
 
 var switchCommand = &cobra.Command{

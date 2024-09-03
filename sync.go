@@ -1,4 +1,4 @@
-package workspace
+package main
 
 import (
 	"github.com/mateothegreat/go-multilog/multilog"
@@ -7,7 +7,7 @@ import (
 )
 
 func init() {
-	WorkspaceCommand.AddCommand(syncCommand)
+	root.AddCommand(syncCommand)
 }
 
 var syncCommand = &cobra.Command{

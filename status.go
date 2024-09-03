@@ -1,4 +1,4 @@
-package workspace
+package main
 
 import (
 	"path/filepath"
@@ -17,7 +17,7 @@ type StatusResult struct {
 
 func init() {
 	statusCommand.Flags().StringP("workspace", "w", "", "the name of the workspace to get the status of")
-	WorkspaceCommand.AddCommand(statusCommand)
+	root.AddCommand(statusCommand)
 }
 
 var statusCommand = &cobra.Command{

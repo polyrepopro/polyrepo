@@ -31,41 +31,41 @@ You can then add your repositories and workspaces to the configuration file.
 ### Commiting & Pushing Changes
 
 ```bash
-polyrepo workspace commit --workspace dev --message "Test commit @ $(date)"
-polyrepo workspace push --workspace dev
+polyrepo commit --workspace dev --message "Test commit @ $(date)"
+polyrepo push --workspace dev
 ```
 
-You can also specify a config file and/or workspace name to be explicit:
+You can also specify a config file and/or name to be explicit:
 
 ```bash
-polyrepo workspace --config ~/workspace/nvr.ai/.polyrepo.yaml commit --workspace dev --message "Test commit @ $(date)"
+polyrepo --config ~/workspace/nvr.ai/.polyrepo.yaml commit --workspace dev --message "Test commit @ $(date)"
 
 2024/09/02 11:39:29 [INFO] workspace.commit: committed map[messages:[{} {}] path:~/workspace/nvr.ai repositories:2 workspace:dev]
 
-polyrepo workspace --config ~/workspace/nvr.ai/.polyrepo.yaml push --workspace dev
+polyrepo --config ~/workspace/nvr.ai/.polyrepo.yaml push --workspace dev
 
 2024/09/02 11:40:40 [INFO] workspace.push: pushed changes for all repositories map[path:~/workspace/nvr.ai repositories:2 workspace:dev]
 ```
 
 ## Commands
 
-| Command                                                                   | Description                                                       |
-| ------------------------------------------------------------------------- | ----------------------------------------------------------------- |
-| [polyrepo help](#polyrepo-help)                                           | Show the help for the polyrepo CLI.                               |
-| [polyrepo version](#polyrepo-version)                                     | Show the version of the polyrepo CLI.                             |
-| [polyrepo init](#polyrepo-init)                                           | Initialize a new global `.polyrepo.yaml` configuration file.      |
-| [polyrepo workspace run](#polyrepo-workspace-run)                         | Run a command(s) in each repository and watch for changes.        |
-| [polyrepo workspace status](#polyrepo-workspace-status)                   | Show the status of the polyrepo workspace.                        |
-| [polyrepo workspace sync](#polyrepo-workspace-sync)                       | Sync workspace with the remotes.                                  |
-| [polyrepo workspace switch](#polyrepo-workspace-switch)                   | Switch the branch of repositories in a workspace.                 |
-| [polyrepo workspace commit](#polyrepo-workspace-commit)                   | Commit the changes for each repository in the workspace.          |
-| [polyrepo workspace commit-and-push](#polyrepo-workspace-commit-and-push) | Commit the changes for each repository in the workspace and push. |
-| [polyrepo workspace push](#polyrepo-workspace-push)                       | Push the changes for each repository in the workspace.            |
-| [polyrepo workspace pull](#polyrepo-workspace-pull)                       | Pull the latest changes for each repository in the workspace.     |
-| [polyrepo repo add](#polyrepo-repo-add)                                   | Add a repository to the polyrepo workspace.                       |
-| [polyrepo repo remove](#polyrepo-repo-remove)                             | Remove a repository from the polyrepo workspace.                  |
-| [polyrepo repo sync](#polyrepo-repo-sync)                                 | Sync a repo with the remote.                                      |
-| [polyrepo repo track](#polyrepo-repo-track)                               | Adds the current working directory to the polyrepo workspace.     |
+| Command                                               | Description                                                   |
+| ----------------------------------------------------- | ------------------------------------------------------------- |
+| [polyrepo help](#polyrepo-help)                       | Show the help for the polyrepo CLI.                           |
+| [polyrepo version](#polyrepo-version)                 | Show the version of the polyrepo CLI.                         |
+| [polyrepo init](#polyrepo-init)                       | Initialize a new global `.polyrepo.yaml` configuration file.  |
+| [polyrepo run](#polyrepo-run)                         | Run a command(s) in each repository and watch for changes.    |
+| [polyrepo status](#polyrepo-status)                   | Show the status of the polyrepo workspace.                    |
+| [polyrepo sync](#polyrepo-sync)                       | Sync with the remotes.                                        |
+| [polyrepo switch](#polyrepo-switch)                   | Switch the branch of repositories in a workspace.             |
+| [polyrepo commit](#polyrepo-commit)                   | Commit the changes for each repository in the workspace.      |
+| [polyrepo commit-and-push](#polyrepo-commit-and-push) | Commit the changes for each repository in the and push.       |
+| [polyrepo push](#polyrepo-push)                       | Push the changes for each repository in the workspace.        |
+| [polyrepo pull](#polyrepo-pull)                       | Pull the latest changes for each repository in the workspace. |
+| [polyrepo repo add](#polyrepo-repo-add)               | Add a repository to the polyrepo workspace.                   |
+| [polyrepo repo remove](#polyrepo-repo-remove)         | Remove a repository from the polyrepo workspace.              |
+| [polyrepo repo sync](#polyrepo-repo-sync)             | Sync a repo with the remote.                                  |
+| [polyrepo repo track](#polyrepo-repo-track)           | Adds the current working directory to the polyrepo workspace. |
 
 ### `polyrepo help`
 
@@ -86,9 +86,9 @@ Initialize a new global `.polyrepo.yaml` configuration file.
 | -p, --path | `~/.polyrepo.yaml` | **Yes**  | The path to save the `.polyrepo.yaml` file.       |
 | -u, --url  |                    | No       | A URL to download the `.polyrepo.yaml` file from. |
 
-### `polyrepo workspace run`
+### `polyrepo run`
 
-Run command(s) in each repository in the workspace and watch for changes.
+Run command(s) in each repository in the and watch for changes.
 
 > Use `watch: true` in the runner to watch for changes and automatically restart the command(s) base
 > on pattern matchers.
@@ -117,16 +117,16 @@ workspaces:
                   - "."
 ```
 
-### `polyrepo workspace status`
+### `polyrepo status`
 
 Show the status of the polyrepo workspace.
 
-| Flag            | Default | Required | Description                                             |
-| --------------- | ------- | -------- | ------------------------------------------------------- |
-| -w, --workspace |         | Optional | The name of the workspace to show the status of or all. |
+| Flag            | Default | Required | Description                                   |
+| --------------- | ------- | -------- | --------------------------------------------- |
+| -w, --workspace |         | Optional | The name of the to show the status of or all. |
 
 ```bash
-go workspace status
+go status
 ```
 
 Example output:
@@ -137,43 +137,43 @@ Example output:
 2024/09/02 17:44:06 [INFO] workspace.status: summary map[dirty:2 repositories:10 workspaces:1]
 ```
 
-### `polyrepo workspace sync`
+### `polyrepo sync`
 
-Sync workspace with the remotes.
+Sync with the remotes.
 
-This command syncs the workspace by ensuring that each repository exists locally.
+This command syncs the by ensuring that each repository exists locally.
 
-| Flag            | Default | Required | Description                        |
-| --------------- | ------- | -------- | ---------------------------------- |
-| -w, --workspace |         | **Yes**  | The name of the workspace to sync. |
+| Flag            | Default | Required | Description              |
+| --------------- | ------- | -------- | ------------------------ |
+| -w, --workspace |         | **Yes**  | The name of the to sync. |
 
-### `polyrepo workspace checkout`
+### `polyrepo checkout`
 
 Checkout a branch across all repositories in a workspace.
 
-| Flag            | Default | Required | Description                                      |
-| --------------- | ------- | -------- | ------------------------------------------------ |
-| -w, --workspace |         |          | The name of the workspace to checkout branch on. |
-| -b, --branch    |         | **Yes**  | The branch to checkout the repositories to.      |
+| Flag            | Default | Required | Description                                 |
+| --------------- | ------- | -------- | ------------------------------------------- |
+| -w, --workspace |         |          | The name of the to checkout branch on.      |
+| -b, --branch    |         | **Yes**  | The branch to checkout the repositories to. |
 
-### `polyrepo workspace commit`
+### `polyrepo commit`
 
 Commit the changes for each repository in the workspace.
 
 | Flag            | Default | Required | Description                                  |
 | --------------- | ------- | -------- | -------------------------------------------- |
-| -w, --workspace |         | **Yes**  | The name of the workspace to commit for.     |
+| -w, --workspace |         | **Yes**  | The name of the to commit for.               |
 | -m, --message   |         | **Yes**  | The message to commit the repositories with. |
 
-### `polyrepo workspace commit-and-push`
+### `polyrepo commit-and-push`
 
-Commit the changes for each repository in the workspace and push.
+Commit the changes for each repository in the and push.
 
-### `polyrepo workspace push`
+### `polyrepo push`
 
 Push the changes for each repository in the workspace.
 
-### `polyrepo workspace pull`
+### `polyrepo pull`
 
 Pull the latest changes for each repository in the workspace.
 
@@ -195,7 +195,7 @@ Adds the current working directory to the polyrepo workspace.
 
 ## Configuration
 
-Polyrepo workspaces are configured in a `.polyrepo.yaml` file which can be created by running `polyrepo workspace init`.
+Polyrepo workspaces are configured in a `.polyrepo.yaml` file which can be created by running `polyrepo init`.
 
 A simple example `.polyrepo.yaml` file looks like this:
 

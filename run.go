@@ -1,4 +1,4 @@
-package workspace
+package main
 
 import (
 	"context"
@@ -13,7 +13,7 @@ import (
 
 func init() {
 	runCommand.Flags().StringP("workspace", "w", "", "the name of the workspace to run the commands for")
-	WorkspaceCommand.AddCommand(runCommand)
+	root.AddCommand(runCommand)
 }
 
 var runCommand = &cobra.Command{
