@@ -1,17 +1,20 @@
 package main
 
 import (
+	"fmt"
 	"sync"
 
 	"github.com/mateothegreat/go-multilog/multilog"
-	"github.com/polyrepopro/api/workspaces"
+	"github.com/polyrepopro/api/repositories"
 	"github.com/polyrepopro/polyrepo/util"
 	"github.com/spf13/cobra"
 )
 
 func init() {
-	commitCommand.Flags().StringP("workspace", "w", "", "The name of the workspace to update.")
-	commitCommand.Flags().StringP("message", "m", "", "The message to commit with.")
+	commitCommand.Flags().StringSliceP("workspace", "w", []string{}, "the name of the workspace(s) to commit in")
+	commitCommand.Flags().StringSliceP("tag", "t", []string{}, "the tags to filter the repositories by")
+	commitCommand.Flags().StringP("message", "m", "", "the message to commit with")
+	commitCommand.MarkFlagRequired("message")
 	root.AddCommand(commitCommand)
 }
 
@@ -20,44 +23,53 @@ var commitCommand = &cobra.Command{
 	Short: "Commit the changes for each repository in the workspace.",
 	Long:  "Commit the changes for each repository in the workspace.",
 	Run: func(cmd *cobra.Command, args []string) {
-		setup, err := Setup("workspace.commit", util.GetArg[string](cmd, "workspace"), util.GetArg[string](cmd, "config"))
+		setup, err := Setup("workspace.commit", "", util.GetArg[string](cmd, "config"))
 		if err != nil {
 			multilog.Fatal("workspace.commit", "failed to setup", map[string]interface{}{
 				"error": err,
 			})
 		}
 
-		result, errs := workspaces.Commit(workspaces.CommitArgs{
-			Workspace: setup.Workspace,
-			Message:   util.GetArg[string](cmd, "message"),
-		})
-		if len(errs) > 0 {
-			multilog.Fatal("workspace.commit", "commit failed", map[string]interface{}{
-				"workspace": setup.Workspace.Name,
-				"path":      setup.Workspace.Path,
-				"errors":    errs,
+		workspaces, err := setup.Config.GetWorkspaces(util.GetArg[[]string](cmd, "workspace"))
+		if err != nil {
+			multilog.Fatal("workspace.commit", "failed to get workspaces", map[string]interface{}{
+				"error": err,
 			})
 		}
-
-		var wg sync.WaitGroup
-		for _, repo := range result {
-			wg.Add(1)
-			go func() {
-				defer wg.Done()
-				for _, msg := range *repo.Messages {
-					multilog.Info("workspace.commit", "committed changes", map[string]interface{}{
-						"change": msg,
-						"repo":   repo.Path,
+		wg := sync.WaitGroup{}
+		for _, workspace := range *workspaces {
+			repos := workspace.GetRepositories(util.GetArg[[]string](cmd, "tag"))
+			for _, repo := range *repos {
+				wg.Add(1)
+				go func() {
+					defer wg.Done()
+					result, errs := repositories.Commit(repositories.CommitArgs{
+						Workspace:  setup.Workspace,
+						Repository: &repo,
+						Message:    util.GetArg[string](cmd, "message"),
 					})
-				}
-			}()
+					if err != nil {
+						multilog.Error(workspace.Name, fmt.Sprintf("failed to commit in %s", repo.Name), map[string]interface{}{
+							"workspace": setup.Workspace.Name,
+							"path":      setup.Workspace.Path,
+							"errors":    errs,
+						})
+					}
+					if len(*result.Messages) > 0 {
+						for _, msg := range *result.Messages {
+							multilog.Info(workspace.Name, fmt.Sprintf("committed %s in %s", msg, repo.Name), map[string]interface{}{
+								"change": msg,
+								"repo":   repo.Name,
+							})
+						}
+					} else {
+						multilog.Info(workspace.Name, fmt.Sprintf("no pending changes in %s", repo.Name), map[string]interface{}{
+							"repo": repo.Name,
+						})
+					}
+				}()
+			}
 		}
 		wg.Wait()
-
-		multilog.Info("workspace.commit", "committed all changes", map[string]interface{}{
-			"workspace":    setup.Workspace.Name,
-			"path":         setup.Workspace.Path,
-			"repositories": len(*setup.Workspace.Repositories),
-		})
 	},
 }

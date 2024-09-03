@@ -1,15 +1,18 @@
 package main
 
 import (
+	"fmt"
+	"sync"
+
 	"github.com/mateothegreat/go-multilog/multilog"
-	"github.com/polyrepopro/api/config"
-	"github.com/polyrepopro/api/workspaces"
+	"github.com/polyrepopro/api/repositories"
 	"github.com/polyrepopro/polyrepo/util"
 	"github.com/spf13/cobra"
 )
 
 func init() {
-	pullCommand.Flags().StringP("workspace", "w", "", "isolate to a specific workspace")
+	pullCommand.Flags().StringSliceP("workspace", "w", []string{}, "the name of the workspace(s) to commit in")
+	pullCommand.Flags().StringSliceP("tag", "t", []string{}, "the tags to filter the repositories by")
 	root.AddCommand(pullCommand)
 }
 
@@ -18,52 +21,44 @@ var pullCommand = &cobra.Command{
 	Short: "pull the latest changes for each repository in the workspace",
 	Long:  "pull the latest changes for each repository in the workspace",
 	Run: func(cmd *cobra.Command, args []string) {
-		cfg, err := config.GetConfig(util.GetArg[string](cmd, "config"))
+		setup, err := Setup("workspace.pull", "", util.GetArg[string](cmd, "config"))
 		if err != nil {
-			multilog.Fatal("workspace.pull", "failed to get config", map[string]interface{}{
+			multilog.Fatal("workspace.pull", "failed to setup", map[string]interface{}{
 				"error": err,
 			})
 		}
-
-		workspaceName := util.GetArg[string](cmd, "workspace")
-		if workspaceName == "" {
-			for _, workspace := range *cfg.Workspaces {
-				workspaces.Pull(workspaces.PullArgs{
-					Workspace: &workspace,
-				})
-
-				multilog.Info("workspace.pull", "pull completed", map[string]interface{}{
-					"workspace":    workspace.Name,
-					"path":         workspace.Path,
-					"repositories": len(*workspace.Repositories),
-				})
-			}
-		} else {
-			workspace, err := cfg.GetWorkspace(workspaceName)
-			if err != nil {
-				multilog.Fatal("workspace.pull", "failed to get workspace", map[string]interface{}{
-					"config":    cfg.Path,
-					"workspace": workspace,
-					"error":     err,
-				})
-			}
-
-			errs := workspaces.Pull(workspaces.PullArgs{
-				Workspace: workspace,
-			})
-			if len(errs) > 0 {
-				multilog.Fatal("workspace.pull", "pull failed", map[string]interface{}{
-					"workspace": workspace.Name,
-					"path":      workspace.Path,
-					"errors":    errs,
-				})
-			}
-
-			multilog.Info("workspace.pull", "pulled", map[string]interface{}{
-				"workspace":    workspace.Name,
-				"path":         workspace.Path,
-				"repositories": len(*workspace.Repositories),
+		workspaces, err := setup.Config.GetWorkspaces(util.GetArg[[]string](cmd, "workspace"))
+		if err != nil {
+			multilog.Fatal("workspace.pull", "failed to get workspaces", map[string]interface{}{
+				"error": err,
 			})
 		}
+		wg := sync.WaitGroup{}
+		for _, workspace := range *workspaces {
+			repos := workspace.GetRepositories(util.GetArg[[]string](cmd, "tag"))
+			for _, repo := range *repos {
+				wg.Add(1)
+				go func() {
+					defer wg.Done()
+					err := repositories.Pull(repositories.PullArgs{
+						Workspace:  setup.Workspace,
+						Repository: &repo,
+					})
+					if err != nil {
+						multilog.Error(workspace.Name, fmt.Sprintf("failed to pull in %s", repo.Name), map[string]interface{}{
+							"workspace": setup.Workspace.Name,
+							"path":      setup.Workspace.Path,
+							"errors":    err,
+						})
+					} else {
+						multilog.Info(workspace.Name, fmt.Sprintf("pulled in %s", repo.Name), map[string]interface{}{
+							"workspace": setup.Workspace.Name,
+							"path":      setup.Workspace.Path,
+						})
+					}
+				}()
+			}
+		}
+		wg.Wait()
 	},
 }
