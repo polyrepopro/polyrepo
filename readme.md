@@ -88,11 +88,10 @@ Initialize a new global `.polyrepo.yaml` configuration file.
 
 ### `polyrepo workspace run`
 
-Run a command(s) in each repository in the workspace and watch for changes.
+Run command(s) in each repository in the workspace and watch for changes.
 
-If changes are detected, the command(s) are restarted.
-
-![alt text](docs/Cursor-000215.gif)
+> Use `watch: true` in the runner to watch for changes and automatically restart the command(s) base
+> on pattern matchers.
 
 Example configuration with watches:
 
@@ -104,16 +103,18 @@ workspaces:
       - url: git@github.com:polyrepopro/example-test-repo.git
         branch: main
         path: examples/example-test-repo
-        watches:
-          - cwd: ~/workspace/polyrepo/examples/example-test-repo
-            paths:
-              - "**/*.go"
+        runners:
+          - watch: true
+            matchers:
+              - include: "go.mod"
+              - include: ".go$"
+                ignore: "pkg/go-glib"
             commands:
               - name: "run"
                 command:
                   - "go"
                   - "run"
-                  - "test/main.go"
+                  - "."
 ```
 
 ### `polyrepo workspace status`
@@ -214,62 +215,125 @@ workspaces:
 A more complex example:
 
 ```yaml
+deafult: dev
 workspaces:
   - name: dev
-    path: ~/workspace/polyrepo-dev
+    path: ~/workspace/nvr.ai
     repositories:
-      - url: git@github.com:polyrepopro/api.git
-        remote: origin
+      - name: mail
+        url: git@github.com:nvr-ai/go-mail.git
         branch: main
-        path: pkg/api
-        hooks:
-          clone:
-            - command:
-                - go
-                - mod
-                - download
-          pre_push:
-            - command:
-                - go
-                - mod
-                - verify
-        watches:
-          - paths:
-              - "**/*.go"
+        path: pkg/mail
+      - name: config
+        url: git@github.com:nvr-ai/go-config.git
+        branch: main
+        path: pkg/config
+      - name: exceptions
+        url: git@github.com:nvr-ai/go-exceptions.git
+        branch: main
+        path: pkg/exceptions
+      - name: types
+        url: git@github.com:nvr-ai/go-types.git
+        branch: main
+        path: pkg/types
+      - name: spa
+        url: git@github.com:nvr-ai/apps/spa.git
+        branch: main
+        path: apps/spa
+        runners:
+          - cwd: apps/spa
+            matchers:
+              - path: src
+                include: ".svelte$|.ts$|.scss$|.pcss$|.json$"
+                ignore: "node_modules"
+            commands:
+              - name: "run"
+                command:
+                  - "npm"
+                  - "run"
+                  - "dev"
+      - name: broker
+        url: git@github.com:nvr-ai/go-broker.git
+        branch: main
+        path: pkg/broker
+        runners:
+          - cwd: pkg/broker
+            watch: true
+            matchers:
+              - include: "go.mod"
+              - include: ".go$"
             commands:
               - name: "run"
                 command:
                   - "go"
                   - "run"
-                  - "main.go"
-      - url: git@github.com:polyrepopro/cli.git
+                  - "."
+      - name: ingester
+        url: git@github.com:nvr-ai/go-ingester.git
         branch: main
-        path: pkg/cli
-        hooks:
-          clone:
-            - command:
-                - go
-                - mod
-                - download
-          pull:
-            - command:
-                - go
-                - mod
-                - download
-          pre_push:
-            - command:
-                - go
-                - mod
-                - verify
-        watches:
-          - paths:
-              - "**/*.go"
+        path: pkg/ingester
+        runners:
+          - cwd: pkg/ingester
+            watch: true
+            matchers:
+              - include: "go.mod"
+              - include: ".go$"
             commands:
               - name: "run"
                 command:
                   - "go"
                   - "run"
-                  - "main.go"
+                  - "."
+      - name: kubernetes-controller
+        url: git@github.com:nvr-ai/go-kubernetes-controller.git
+        branch: main
+        path: pkg/kubernetes-controller
+        runners:
+          - cwd: pkg/kubernetes-controller
+            watch: true
+            matchers:
+              - include: "go.mod"
+              - include: ".go$"
+            commands:
+              - name: "run"
+                command:
+                  - "go"
+                  - "run"
+                  - "."
+      - name: streamer
+        url: git@github.com:nvr-ai/go-streamer.git
+        branch: main
+        path: pkg/go-streamer
+        runners:
+          - cwd: pkg/go-streamer
+            watch: true
+            matchers:
+              - include: "go.mod"
+              - include: ".go$"
+                ignore: "pkg/go-glib"
+            commands:
+              - name: "run"
+                command:
+                  - "go"
+                  - "run"
+                  - "."
+      - name: webrtc
+        url: git@github.com:nvr-ai/go-webrtc.git
+        branch: main
+        path: pkg/webrtc
+        runners:
+          - cwd: pkg/webrtc
+            watch: true
+            matchers:
+              - include: "go.mod"
+              - include: ".go$"
+            commands:
+              - name: "run"
+                command:
+                  - "go"
+                  - "run"
+                  - "."
+
 ```
 
 ### Schema
