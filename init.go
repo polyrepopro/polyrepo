@@ -11,7 +11,10 @@ import (
 func init() {
 	root.AddCommand(initCommand)
 	initCommand.Flags().StringP("path", "p", "", "the path to save the polyrepo config to")
+	initCommand.MarkFlagRequired("path")
+
 	initCommand.Flags().StringP("url", "u", "", "the URL to the polyrepo config to source from")
+	initCommand.Flags().StringSliceP("tags", "t", []string{}, "use tags to filter repositories")
 }
 
 var initCommand = &cobra.Command{

@@ -40,7 +40,17 @@ You can then add your repositories and workspaces to the configuration file.
 >
 > This will download the config file from the URL and save it to the path you pass with `-p` or `~/.polyrepo.yaml` if not specified.
 
-### Enabling Fast-Forward Merge 🎯
+### Pulling Changes
+
+Keep your local repositories in sync with the remote repositories by pulling the latest changes automagically with a single command:
+
+```bash
+polyrepo pull
+```
+
+This will pull the latest changes for all repositories in the workspace configured in the `.polyrepo.yaml` file.
+
+#### Enabling Fast-Forward Merge 🎯
 
 Sometimes when you pull changes into a repository you want the changes to automatically be merged in.
 
@@ -148,11 +158,12 @@ workspaces:
 
 ### `polyrepo status`
 
-Show the status of the polyrepo workspace.
+Show the status of all polyrepo workspace repositories.
 
 | Flag            | Default | Required | Description                                   |
 | --------------- | ------- | -------- | --------------------------------------------- |
 | -w, --workspace |         | Optional | The name of the to show the status of or all. |
+| -t, --tags      |         | Optional | The tags to filter the repositories by.       |
 
 ```bash
 go status
@@ -160,11 +171,7 @@ go status
 
 Example output:
 
-```bash
-2024/09/02 17:44:05 [INFO] dev: ingester map[dirty:true message:pending changes name:ingester path:~/workspace/nvr.ai/pkg/ingester]
-2024/09/02 17:44:05 [INFO] dev: streamer map[dirty:true message:pending changes name:streamer path:~/workspace/nvr.ai/pkg/go-streamer]
-2024/09/02 17:44:06 [INFO] workspace.status: summary map[dirty:2 repositories:10 workspaces:1]
-```
+![alt text](docs/Cursor-000587.png)
 
 ### `polyrepo sync`
 
