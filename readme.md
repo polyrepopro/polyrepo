@@ -1,4 +1,4 @@
-# Polyrepo CLI
+# Polyrepo CLI 🚀
 
 The way we organize our codebases can significantly impact our productivity, collaboration, and overall happiness.
 
@@ -6,13 +6,13 @@ The way we organize our codebases can significantly impact our productivity, col
 
 Keep your local and remote repositories in sync, commit and push changes to multiple repositories with a single command, share a single config file with your team, and more.
 
-## Installation
+## 📦 Installation
 
 ```bash
 go install github.com/polyrepopro/polyrepo@latest
 ```
 
-## Getting Started
+## 👉 Getting Started
 
 ```bash
 polyrepo init
@@ -27,6 +27,23 @@ You can then add your repositories and workspaces to the configuration file.
 > Try it now: `polyrepo init -u https://raw.githubusercontent.com/polyrepopro/cli/main/.polyrepo.yaml`
 >
 > This will download the config file from the URL and save it to the path you pass with `-p` or `~/.polyrepo.yaml` if not specified.
+
+### Enabling Fast-Forward Merge 🎯
+
+Sometimes when you pull changes into a repository you want the changes to automatically be merged in.
+
+This will prompt you to merge the changes in most cases which will require you to resolve conflicts
+manually outside of `polyrepo`.
+
+`polyrepo` allows you to enable fast-forward merges by adding the following to your `.gitconfig`:
+
+```bash
+[pull]
+  rebase = false
+  ff = true # automatic merging on pull
+[merge]
+  ff = true # allow fast-forward merges to auto-accept
+```
 
 ### Commiting & Pushing Changes
 
