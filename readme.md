@@ -1,5 +1,17 @@
 # Polyrepo CLI 🚀
 
+```bash
+
+                 __
+    ____  ____  / /_  __________  ____  ____
+   / __ \/ __ \/ / / / / ___/ _ \/ __ \/ __ \
+  / /_/ / /_/ / / /_/ / /  /  __/ /_/ / /_/ /
+ / .___/\____/_/\__, /_/   \___/ .___/\____/
+/_/            /____/         /_/
+```
+
+🤙 <https://polyrepopro.com>
+
 The way we organize our codebases can significantly impact our productivity, collaboration, and overall happiness.
 
 **Polyrepo is a tool for managing polyrepo workspaces like a boss.**
@@ -210,7 +222,7 @@ Sync a repo with the remote.
 
 Adds the current working directory to the polyrepo workspace.
 
-## Configuration
+## ⚙️ Configuration
 
 Polyrepo workspaces are configured in a `.polyrepo.yaml` file which can be created by running `polyrepo init`.
 
