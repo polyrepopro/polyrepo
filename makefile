@@ -4,8 +4,8 @@ docker/build:
 docker/run:
 	docker run --entrypoint=sh -it cli
 
-update:
-  polyrepo workspace commit --message update
+up:
+	polyrepo workspace commit --message update
 	polyrepo workspace push
 	go get -u github.com/polyrepopro/api
 	go mod tidy
