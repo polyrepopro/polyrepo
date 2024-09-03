@@ -95,6 +95,8 @@ github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZb
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/polyrepopro/api v0.0.0-20240902215601-29179a9fa57d h1:XcGv3mrjU7zWkSutW7f+gZk0CHsQli9fWU/HuEiS2mc=
 github.com/polyrepopro/api v0.0.0-20240902215601-29179a9fa57d/go.mod h1:OYAgW3POZDx2oGGqik7wb1z3SuvbVqwVkXhDdZ1/ChE=
+github.com/polyrepopro/api v0.0.0-20240903043705-03cf79fa97fb h1:VzaHiH+vUsjraRVmkLTirQIeZeKpPZ2BHeW095eZids=
+github.com/polyrepopro/api v0.0.0-20240903043705-03cf79fa97fb/go.mod h1:OYAgW3POZDx2oGGqik7wb1z3SuvbVqwVkXhDdZ1/ChE=
 github.com/rogpeppe/go-internal v1.11.0 h1:cWPaGQEPrBb5/AsnsZesgZZ9yb1OQ+GOISoDNXVBh4M=
 github.com/rogpeppe/go-internal v1.11.0/go.mod h1:ddIwULY96R17DhadqLgMfk9H9tvdUzkipdSkR5nkCZA=
 github.com/russross/blackfriday/v2 v2.1.0/go.mod h1:+Rmxgy9KzJVeS9/2gXHxylqXiyQDYRxCVz55jmeOWTM=
