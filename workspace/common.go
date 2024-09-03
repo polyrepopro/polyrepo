@@ -18,8 +18,8 @@ func Setup(group string, workspaceName string, configPath string) (SetupResult, 
 		})
 	}
 
-	if workspaceName == "" && cfg.Current != "" {
-		workspaceName = cfg.Current
+	if workspaceName == "" && cfg.Default != "" {
+		workspaceName = cfg.Default
 	} else {
 		if len(*cfg.Workspaces) > 0 {
 			workspaceName = (*cfg.Workspaces)[0].Name

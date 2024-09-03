@@ -1,10 +1,10 @@
 # Polyrepo CLI
 
-> Polyrepo is a tool for managing polyrepo workspaces like a boss.
->
-> Keep your local and remote repositories in sync, commit and push changes to multiple repositories with a single command, and more.
+The way we organize our codebases can significantly impact our productivity, collaboration, and overall happiness.
 
-Polyrepo CLI is a command-line interface for the Polyrepo project. It allows you to manage your polyrepo workspace and its repositories.
+**Polyrepo is a tool for managing polyrepo workspaces like a boss.**
+
+Keep your local and remote repositories in sync, commit and push changes to multiple repositories with a single command, share a single config file with your team, and more.
 
 ## Installation
 
