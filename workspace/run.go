@@ -2,8 +2,10 @@ package workspace
 
 import (
 	"context"
+	"path/filepath"
 
 	"github.com/mateothegreat/go-multilog/multilog"
+	"github.com/mateothegreat/go-util/files"
 	"github.com/polyrepopro/api/commands"
 	"github.com/polyrepopro/polyrepo/util"
 	"github.com/spf13/cobra"
@@ -37,9 +39,21 @@ var runCommand = &cobra.Command{
 		defer cancel()
 
 		for _, repo := range *workspace.Repositories {
-			if repo.Watches != nil {
-				for _, watch := range *repo.Watches {
-					go commands.Watch(ctx, workspace.Path, watch)
+			if repo.Runners != nil {
+				for _, runner := range *repo.Runners {
+					if runner.Watch {
+						go commands.Watch(ctx, repo.Name, workspace.Path, runner)
+					} else {
+						for _, command := range runner.Commands {
+							var base string
+							if runner.Cwd != "" {
+								base = files.ExpandPath(filepath.Join(workspace.Path, runner.Cwd))
+							} else {
+								base = files.ExpandPath(filepath.Join(workspace.Path, command.Cwd))
+							}
+							go commands.Run(ctx, repo.Name, command, base)
+						}
+					}
 				}
 			}
 		}
