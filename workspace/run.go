@@ -2,7 +2,11 @@ package workspace
 
 import (
 	"context"
+	"os"
+	"os/signal"
 	"path/filepath"
+	"syscall"
+	"time"
 
 	"github.com/mateothegreat/go-multilog/multilog"
 	"github.com/mateothegreat/go-util/files"
@@ -38,6 +42,21 @@ var runCommand = &cobra.Command{
 		ctx, cancel := context.WithCancel(cmd.Context())
 		defer cancel()
 
+		sig := make(chan os.Signal, 1)
+		signal.Notify(sig, syscall.SIGTERM, syscall.SIGINT, os.Interrupt)
+
+		processes := make([]*os.Process, 0)
+
+		go func() {
+			<-sig
+			println("received sigterm, canceling context")
+			cancel()
+			for _, proc := range processes {
+				proc.Kill()
+			}
+			time.Sleep(4 * time.Second)
+		}()
+
 		for _, repo := range *workspace.Repositories {
 			if repo.Runners != nil {
 				for _, runner := range *repo.Runners {
@@ -51,7 +70,10 @@ var runCommand = &cobra.Command{
 							} else {
 								base = files.ExpandPath(filepath.Join(workspace.Path, command.Cwd))
 							}
-							go commands.Run(ctx, repo.Name, command, base)
+							go func() {
+								proc := commands.Run(ctx, repo.Name, command, base)
+								processes = append(processes, proc)
+							}()
 						}
 					}
 				}
