@@ -3,3 +3,11 @@ docker/build:
 
 docker/run:
 	docker run --entrypoint=sh -it cli
+
+update:
+  polyrepo workspace commit --message update
+	polyrepo workspace push
+	go get -u github.com/polyrepopro/api
+	go mod tidy
+	polyrepo workspace commit --message "bump api version"
+	polyrepo workspace push
