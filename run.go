@@ -51,7 +51,7 @@ var runCommand = &cobra.Command{
 							} else {
 								base = files.ExpandPath(filepath.Join(workspace.Path, command.Cwd))
 							}
-							commands.Run(ctx, repo.Name, command, base)
+							go commands.Run(ctx, repo.Name, command, base)
 						}
 					}
 				}
