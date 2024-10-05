@@ -7,6 +7,7 @@ import (
 )
 
 func init() {
+	syncCommand.Flags().StringP("workspace", "w", "", "the name of the workspace to sync")
 	root.AddCommand(syncCommand)
 }
 
