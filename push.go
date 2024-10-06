@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"sync"
 
 	"github.com/mateothegreat/go-multilog/multilog"
@@ -11,7 +12,7 @@ import (
 )
 
 func init() {
-	pushCommand.Flags().StringSliceP("workspace", "w", []string{}, "the name of the workspace(s) to commit in")
+	pushCommand.Flags().StringP("workspace", "w", "", "the name of the workspace(s) to commit in")
 	pushCommand.Flags().StringSliceP("tag", "t", []string{}, "the tags to filter the repositories by")
 	root.AddCommand(pushCommand)
 }
@@ -21,14 +22,16 @@ var pushCommand = &cobra.Command{
 	Short: "push changes for each repository in the workspace",
 	Long:  "push changes for each repository in the workspace",
 	Run: func(cmd *cobra.Command, args []string) {
-		setup, err := Setup("workspace.push", "", util.GetArg[string](cmd, "config"))
+		workspace := cmd.Flag("workspace").Value.String()
+		log.Printf("pushCommand workspace: %s", workspace)
+		setup, err := Setup("workspace.push", util.GetArg[string](cmd, "workspace"), util.GetArg[string](cmd, "config"))
 		if err != nil {
 			multilog.Fatal("workspace.push", "failed to setup", map[string]interface{}{
 				"error": err,
 			})
 		}
 
-		workspaces, err := setup.Config.GetWorkspaces(util.GetArg[[]string](cmd, "workspace"))
+		workspaces, err := setup.Config.GetWorkspaces([]string{util.GetArg[string](cmd, "workspace")})
 		if err != nil {
 			multilog.Fatal("workspace.push", "failed to get workspaces", map[string]interface{}{
 				"error": err,

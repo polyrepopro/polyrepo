@@ -13,6 +13,7 @@ var root = &cobra.Command{
 
 func main() {
 	root.PersistentFlags().StringP("config", "c", "", "the path to the polyrepo config file")
+	root.PersistentFlags().StringP("workspace", "w", "", "the name of the workspace to use")
 	root.PersistentFlags().BoolP("verbose", "v", false, "output detailed logs")
 
 	logLevel := multilog.INFO
