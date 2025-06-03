@@ -37,6 +37,7 @@ var commitCommand = &cobra.Command{
 				"error": err,
 			})
 		}
+		fmt.Printf("message: %+v\n", util.GetArg[string](cmd, "message"))
 		wg := sync.WaitGroup{}
 		for _, workspace := range *workspaces {
 			repos := workspace.GetRepositories(util.GetArg[[]string](cmd, "tag"))
