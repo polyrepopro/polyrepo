@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"sync"
 
+	"github.com/fatih/color"
 	"github.com/mateothegreat/go-multilog/multilog"
 	"github.com/polyrepopro/api/repositories"
 	"github.com/polyrepopro/polyrepo/util"
@@ -22,8 +22,6 @@ var pushCommand = &cobra.Command{
 	Short: "push changes for each repository in the workspace",
 	Long:  "push changes for each repository in the workspace",
 	Run: func(cmd *cobra.Command, args []string) {
-		workspace := cmd.Flag("workspace").Value.String()
-		log.Printf("pushCommand workspace: %s", workspace)
 		setup, err := Setup("workspace.push", util.GetArg[string](cmd, "workspace"), util.GetArg[string](cmd, "config"))
 		if err != nil {
 			multilog.Fatal("workspace.push", "failed to setup", map[string]interface{}{
@@ -55,9 +53,8 @@ var pushCommand = &cobra.Command{
 							"errors":    errs,
 						})
 					} else {
-						multilog.Info(workspace.Name, fmt.Sprintf("pushed in %s", repo.Name), map[string]interface{}{
-							"workspace": setup.Workspace.Name,
-							"path":      setup.Workspace.Path,
+						multilog.Info(workspace.Name, repo.Name, map[string]interface{}{
+							"status": color.GreenString("pushed"),
 						})
 					}
 				}()

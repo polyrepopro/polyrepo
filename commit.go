@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"sync"
 
+	"github.com/fatih/color"
 	"github.com/mateothegreat/go-multilog/multilog"
 	"github.com/polyrepopro/api/repositories"
 	"github.com/polyrepopro/polyrepo/util"
@@ -57,14 +58,13 @@ var commitCommand = &cobra.Command{
 					}
 					if len(*result.Messages) > 0 {
 						for _, msg := range *result.Messages {
-							multilog.Info(workspace.Name, fmt.Sprintf("committed %s in %s", msg, repo.Name), map[string]interface{}{
-								"change": msg,
-								"repo":   repo.Name,
+							multilog.Info(workspace.Name, repo.Name, map[string]interface{}{
+								"change": color.RedString(msg),
 							})
 						}
 					} else {
-						multilog.Info(workspace.Name, fmt.Sprintf("no pending changes in %s", repo.Name), map[string]interface{}{
-							"repo": repo.Name,
+						multilog.Info(workspace.Name, repo.Name, map[string]interface{}{
+							"status": color.GreenString("clean"),
 						})
 					}
 				}()
