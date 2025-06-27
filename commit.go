@@ -57,7 +57,6 @@ var commitCommand = &cobra.Command{
 							"errors":    errs,
 						})
 					}
-					fmt.Printf("result: %+v\n", result)
 					if result != nil && len(*result.Messages) > 0 {
 						for _, msg := range *result.Messages {
 							multilog.Info(workspace.Name, repo.Name, map[string]interface{}{
