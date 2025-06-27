@@ -111,6 +111,10 @@ github.com/mateothegreat/go-util v0.0.0-20240812031932-d120d349cd20 h1:SY96m7zOZ
 github.com/mateothegreat/go-util v0.0.0-20240812031932-d120d349cd20/go.mod h1:MUTH+eVZG/uedHz/zkJWVD0kCwfvTX/AVDz9tNRg6TI=
 github.com/mateothegreat/go-util v0.0.0-20250627092354-49f09587f50e h1:Q/plzwexbOM2k6iQdQNo1rxTaLKMZA3OVWODKpijuBo=
 github.com/mateothegreat/go-util v0.0.0-20250627092354-49f09587f50e/go.mod h1:L30BuBTFmj3CNzosL/R4kdqOD+1ZWGW2KJlrsBABQR8=
+github.com/mateothegreat/go-util v0.0.0-20250627210726-5092fbb4412e h1:hbwLMJtB9+C3rsnkccbYXQ5xHay6etOb8ekwCPMKbQM=
+github.com/mateothegreat/go-util v0.0.0-20250627210726-5092fbb4412e/go.mod h1:Z4txZlDT9E/IVZH9dliLZ9M6pgOTpmvUfLe6n0a+nkg=
+github.com/mateothegreat/go-util v0.0.0-20250627213116-fb5a3288abd7 h1:isyck20Vh2J1QK4lr8A/QtFyVp/wrxeYGw8IeeCVX4I=
+github.com/mateothegreat/go-util v0.0.0-20250627213116-fb5a3288abd7/go.mod h1:Z4txZlDT9E/IVZH9dliLZ9M6pgOTpmvUfLe6n0a+nkg=
 github.com/mattn/go-colorable v0.1.13 h1:fFA4WZxdEF4tXPZVKMLwD8oUnCTTo08duU7wxecdEvA=
 github.com/mattn/go-colorable v0.1.13/go.mod h1:7S9/ev0klgBDR4GtXTXX8a3vIGJpMovkB8vQcUbaXHg=
 github.com/mattn/go-colorable v0.1.14 h1:9A9LHSqF/7dyVVX6g0U9cwm9pG3kP9gSzcuIPHPsaIE=

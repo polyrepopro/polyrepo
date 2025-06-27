@@ -5,6 +5,7 @@ import (
 	"sync"
 
 	"github.com/mateothegreat/go-multilog/multilog"
+	"github.com/mateothegreat/go-util/values"
 	"github.com/polyrepopro/api/repositories"
 	"github.com/polyrepopro/polyrepo/util"
 	"github.com/spf13/cobra"
@@ -40,9 +41,11 @@ var pullCommand = &cobra.Command{
 				wg.Add(1)
 				go func() {
 					defer wg.Done()
+					auth := values.PickHasValue(repo.Auth, workspace.Auth, setup.Config.Auth)
 					err := repositories.Pull(repositories.PullArgs{
 						Workspace:  setup.Workspace,
 						Repository: &repo,
+						Auth:       auth,
 					})
 					if err != nil {
 						multilog.Error(workspace.Name, fmt.Sprintf("failed to pull in %s", repo.Name), map[string]interface{}{
