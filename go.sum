@@ -136,6 +136,8 @@ github.com/polyrepopro/api v0.0.0-20240903184505-616f38f3b60e h1:MKqSiIdRtCrrxOn
 github.com/polyrepopro/api v0.0.0-20240903184505-616f38f3b60e/go.mod h1:OYAgW3POZDx2oGGqik7wb1z3SuvbVqwVkXhDdZ1/ChE=
 github.com/polyrepopro/api v0.0.0-20250627194717-3e38a469558a h1:0P2hIuAeipZfcyas4LHl1/Oa0oXQBgCmBZ8Q5mzPgSU=
 github.com/polyrepopro/api v0.0.0-20250627194717-3e38a469558a/go.mod h1:OYAgW3POZDx2oGGqik7wb1z3SuvbVqwVkXhDdZ1/ChE=
+github.com/polyrepopro/api v0.0.0-20250627213627-94b4c5c49ad8 h1:uLKkotxWD8CCRttlT67txC857uIN5tywsEuo1sGgO6k=
+github.com/polyrepopro/api v0.0.0-20250627213627-94b4c5c49ad8/go.mod h1:YOzypdN9+Bi9WRlD+LP3+ADl6+bcohbgQpzkyhzJkqo=
 github.com/rogpeppe/go-internal v1.11.0 h1:cWPaGQEPrBb5/AsnsZesgZZ9yb1OQ+GOISoDNXVBh4M=
 github.com/rogpeppe/go-internal v1.11.0/go.mod h1:ddIwULY96R17DhadqLgMfk9H9tvdUzkipdSkR5nkCZA=
 github.com/russross/blackfriday/v2 v2.1.0/go.mod h1:+Rmxgy9KzJVeS9/2gXHxylqXiyQDYRxCVz55jmeOWTM=

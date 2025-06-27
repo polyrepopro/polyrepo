@@ -6,7 +6,7 @@ require (
 	github.com/fatih/color v1.18.0
 	github.com/mateothegreat/go-multilog v0.0.0-20250627190626-359729313052
 	github.com/mateothegreat/go-util v0.0.0-20250627213116-fb5a3288abd7
-	github.com/polyrepopro/api v0.0.0-20250627194717-3e38a469558a
+	github.com/polyrepopro/api v0.0.0-20250627213627-94b4c5c49ad8
 	github.com/spf13/cobra v1.9.1
 	github.com/spf13/pflag v1.0.6
 )
