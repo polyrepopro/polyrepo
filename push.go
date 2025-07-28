@@ -21,7 +21,7 @@ var pushCommand = &cobra.Command{
 	Use:   "push",
 	Short: "push changes for each repository in the workspace",
 	Long:  "push changes for each repository in the workspace",
-	Run: func(cmd *cobra.Command, args []string) {
+	Run: func(cmd *cobra.Command, _ []string) {
 		setup, err := Setup("workspace.push", util.GetArg[string](cmd, "workspace"), util.GetArg[string](cmd, "config"))
 		if err != nil {
 			multilog.Fatal("workspace.push", "failed to setup", map[string]interface{}{
@@ -46,7 +46,7 @@ var pushCommand = &cobra.Command{
 						Workspace:  setup.Workspace,
 						Repository: &repo,
 					})
-					if err != nil {
+					if errs != nil {
 						multilog.Error(workspace.Name, fmt.Sprintf("failed to push in %s", repo.Name), map[string]interface{}{
 							"workspace": setup.Workspace.Name,
 							"path":      setup.Workspace.Path,

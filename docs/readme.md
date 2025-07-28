@@ -88,23 +88,23 @@ polyrepo --config ~/workspace/nvr.ai/.polyrepo.yaml push --workspace dev
 
 ## Commands
 
-| Command                                               | Description                                                   |
-| ----------------------------------------------------- | ------------------------------------------------------------- |
-| [polyrepo help](#polyrepo-help)                       | Show the help for the polyrepo CLI.                           |
-| [polyrepo version](#polyrepo-version)                 | Show the version of the polyrepo CLI.                         |
-| [polyrepo init](#polyrepo-init)                       | Initialize a new global `.polyrepo.yaml` configuration file.  |
-| [polyrepo run](#polyrepo-run)                         | Run a command(s) in each repository and watch for changes.    |
-| [polyrepo status](#polyrepo-status)                   | Show the status of the polyrepo workspace.                    |
-| [polyrepo sync](#polyrepo-sync)                       | Sync with the remotes.                                        |
-| [polyrepo switch](#polyrepo-switch)                   | Switch the branch of repositories in a workspace.             |
-| [polyrepo commit](#polyrepo-commit)                   | Commit the changes for each repository in the workspace.      |
-| [polyrepo commit-and-push](#polyrepo-commit-and-push) | Commit the changes for each repository in the and push.       |
-| [polyrepo push](#polyrepo-push)                       | Push the changes for each repository in the workspace.        |
-| [polyrepo pull](#polyrepo-pull)                       | Pull the latest changes for each repository in the workspace. |
-| [polyrepo repo add](#polyrepo-repo-add)               | Add a repository to the polyrepo workspace.                   |
-| [polyrepo repo remove](#polyrepo-repo-remove)         | Remove a repository from the polyrepo workspace.              |
-| [polyrepo repo sync](#polyrepo-repo-sync)             | Sync a repo with the remote.                                  |
-| [polyrepo repo track](#polyrepo-repo-track)           | Adds the current working directory to the polyrepo workspace. |
+| Command                                                 | Description                                                   |
+| ------------------------------------------------------- | ------------------------------------------------------------- |
+| [`polyrepo help`](#polyrepo-help)                       | Show the help for the polyrepo CLI.                           |
+| [`polyrepo version`](#polyrepo-version)                 | Show the version of the polyrepo CLI.                         |
+| [`polyrepo init`](#polyrepo-init)                       | Initialize a new global `.polyrepo.yaml` configuration file.  |
+| [`polyrepo run`](#polyrepo-run)                         | Run a command(s) in each repository and watch for changes.    |
+| [`polyrepo status`](#polyrepo-status)                   | Show the status of the polyrepo workspace.                    |
+| [`polyrepo sync`](#polyrepo-sync)                       | Sync with the remotes.                                        |
+| [`polyrepo switch`](#polyrepo-switch)                   | Switch the branch of repositories in a workspace.             |
+| [`polyrepo commit`](#polyrepo-commit)                   | Commit the changes for each repository in the workspace.      |
+| [`polyrepo commit-and-push`](#polyrepo-commit-and-push) | Commit the changes for each repository in the and push.       |
+| [`polyrepo push`](#polyrepo-push)                       | Push the changes for each repository in the workspace.        |
+| [`polyrepo pull`](#polyrepo-pull)                       | Pull the latest changes for each repository in the workspace. |
+| [`polyrepo repo add`](#polyrepo-repo-add)               | Add a repository to the polyrepo workspace.                   |
+| [`polyrepo repo remove`](#polyrepo-repo-remove)         | Remove a repository from the polyrepo workspace.              |
+| [`polyrepo repo sync`](#polyrepo-repo-sync)             | Sync a repo with the remote.                                  |
+| [`polyrepo repo track`](#polyrepo-repo-track)           | Adds the current working directory to the polyrepo workspace. |
 
 ### `polyrepo help`
 
@@ -171,7 +171,7 @@ go status
 
 Example output:
 
-![alt text](docs/Cursor-000587.png)
+![alt text](Cursor-000587.png)
 
 ### `polyrepo sync`
 
@@ -182,6 +182,18 @@ This command syncs the by ensuring that each repository exists locally.
 | Flag            | Default | Required | Description              |
 | --------------- | ------- | -------- | ------------------------ |
 | -w, --workspace |         | **Yes**  | The name of the to sync. |
+
+### `polyrepo switch`
+
+Switch the default workspace.
+
+> ![NOTE]
+> This will modify the `.polyrepo.yaml` file by setting the [`default`](#default) workspace value.
+
+| Flag            | Default | Required | Description                               |
+| --------------- | ------- | -------- | ----------------------------------------- |
+| -w, --workspace |         | **Yes**  | The name of the to switch branch on.      |
+| -b, --branch    |         | **Yes**  | The branch to switch the repositories to. |
 
 ### `polyrepo checkout`
 
@@ -251,7 +263,7 @@ workspaces:
 A more complex example:
 
 ```yaml
-deafult: dev
+default: dev
 workspaces:
   - name: dev
     path: ~/workspace/nvr.ai
@@ -372,34 +384,114 @@ workspaces:
 
 ```
 
-### Schema
+### Settings
 
-#### Workspace
+|                                                                                                               | Description                                        |
+| ------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- |
+| [`default`](#default)                                                                                         | The default workspace name to use.                 |
+| [`workspaces[]`](#workspaces)                                                                                 | List of workspaces to use.                         |
+| [`workspaces[].repositories[]`](#workspacesrepositories)                                                      | List of repositories to use.                       |
+| [`workspaces[].repositories[].name`](#workspacesrepositoriesname)                                             | The name of the repository.                        |
+| [`workspaces[].repositories[].url`](#workspacesrepositoriesurl)                                               | The URL of the repository.                         |
+| [`workspaces[].repositories[].branch`](#workspacesrepositoriesbranch)                                         | Branch name to sync the repository with.           |
+| [`workspaces[].repositories[].origin`](#workspacesrepositoriesorigin)                                         | Origin to sync the repository with.                |
+| [`workspaces[].repositories[].path`](#workspacesrepositoriespath)                                             | Path to the repository locally.                    |
+| [`workspaces[].repositories[].runners[].cwd`](#workspacesrepositoriesrunnerscwd)                              | The current working directory to watch.            |
+| [`workspaces[].repositories[].runners[].watch`](#workspacesrepositoriesrunnerswatch)                          | Whether to watch for changes.                      |
+| [`workspaces[].repositories[].runners[].matchers`](#workspacesrepositoriesrunnersmatchers)                    | List of matchers for the runner.                   |
+| [`workspaces[].repositories[].runners[].matchers[].include`](#workspacesrepositoriesrunnersmatchersinclude)   | The pattern to include.                            |
+| [`workspaces[].repositories[].runners[].matchers[].ignore`](#workspacesrepositoriesrunnersmatchersignore)     | The pattern to ignore.                             |
+| [`workspaces[].repositories[].runners[].commands`](#workspacesrepositoriesrunnerscommands)                    | List of commands to run when changes are detected. |
+| [`workspaces[].repositories[].runners[].commands[].name`](#workspacesrepositoriesrunnerscommandsname)         | The name of the command.                           |
+| [`workspaces[].repositories[].runners[].commands[].command[]`](#workspacesrepositoriesrunnerscommandscommand) | The arguments to execute on the shell with.        |
 
-| Field        | Type                        | Description                                 |
-| ------------ | --------------------------- | ------------------------------------------- |
-| name         | string                      | The name of the workspace.                  |
-| path         | string                      | The path to the workspace.                  |
-| repositories | [[]Repository](#repository) | The repositories containedin the workspace. |
+#### `default`
 
-#### Repository
+> `optional`
+> This is an optional setting. If it is not set, the default workspace will be the first workspace in the list.
 
-| Field   | Type              | Description                                  |
-| ------- | ----------------- | -------------------------------------------- |
-| url     | string            | The URL of the repository.                   |
-| branch  | string            | The branch to sync the repository to.        |
-| path    | string            | The path to the repository in the workspace. |
-| watches | [[]Watch](#watch) | The watches for the repository.              |
+The default workspace name to use.
 
-#### Watch
+#### `workspaces[]`
 
-| Field    | Type                  | Description                                    |
-| -------- | --------------------- | ---------------------------------------------- |
-| cwd      | string                | The current working directory to watch.        |
-| paths    | []string              | The paths to watch for changes.                |
-| commands | [[]Command](#command) | The commands to run when changes are detected. |
+List of workspaces to use.
 
-#### Command
+#### `workspaces[].path`
+
+> `required`
+> This is a required setting for each repository.
+
+Path to the workspace (can be relative or absolute).
+
+If a relative path is provided, it will be resolved relative to the `workspaces[].path` value.
+
+Given the following configuration:
+
+```yaml
+default: dev
+workspaces:
+  - name: dev
+    path: ~/workspace/awesome-project
+    repositories:
+      - name: api
+        url: git@github.com:awesome-project/api.git
+        branch: main
+        path: pkg/api
+```
+
+The resulting path for the repository will be `~/workspace/awesome-project/pkg/api`.
+
+#### `workspaces[].repositories[].name`
+
+The name of the repository.
+
+#### `workspaces[].repositories[].url`
+
+The URL of the repository.
+
+#### `workspaces[].repositories[].branch`
+
+Branch name to sync the repository with.
+
+#### `workspaces[].repositories[].origin`
+
+Origin to sync the repository with (overrides default).
+
+#### `workspaces[].repositories[].path`
+
+Path to the repository locally.
+
+#### `workspaces[].repositories[].runners[].cwd`
+
+The current working directory to watch.
+
+#### `workspaces[].repositories[].runners[].watch`
+
+Whether to watch for changes.
+
+#### `workspaces[].repositories[].runners[].matchers`
+
+List of matchers for the runner.
+
+#### `workspaces[].repositories[].runners[].matchers[].include`
+
+The pattern to include.
+
+#### `workspaces[].repositories[].runners[].matchers[].ignore`
+
+The pattern to ignore.
+
+#### `workspaces[].repositories[].runners[].commands`
+
+List of commands to run when changes are detected.
+
+#### `workspaces[].repositories[].runners[].commands[].name`
+
+The name of the command.
+
+#### `workspaces[].repositories[].runners[].commands[].command[]`
+
+The arguments to execute on the shell with.
 
 The command is an array of strings that make up the command to run:
 
@@ -410,10 +502,18 @@ command:
   - "main.go"
 ```
 
-| Field   | Type     | Description              |
-| ------- | -------- | ------------------------ |
-| name    | string   | The name of the command. |
-| command | []string | The command to run.      |
+#### `workspaces[].repositories[].runners[].commands[].command[]`
+
+The arguments to execute on the shell with.
+
+The command is an array of strings that make up the command to run:
+
+```yaml
+command:
+  - "go"
+  - "run"
+  - "main.go"
+```
 
 ---
 
