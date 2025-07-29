@@ -5,7 +5,6 @@ import (
 
 	"github.com/mateothegreat/go-multilog/multilog"
 	"github.com/spf13/cobra"
-	"github.com/spf13/pflag"
 )
 
 var root = &cobra.Command{
@@ -25,23 +24,13 @@ func main() {
 	verbose, _ := root.PersistentFlags().GetBool("verbose")
 
 	if verbose {
-		logLevel = multilog.DEBUG
+		logLevel = multilog.TRACE
 	}
 
 	multilog.RegisterLogger(multilog.LogMethod("console"), multilog.NewConsoleLogger(&multilog.NewConsoleLoggerArgs{
 		Level:  logLevel,
 		Format: multilog.FormatText,
 	}))
-
-	if verbose {
-		logLevel = multilog.DEBUG
-		root.PersistentFlags().VisitAll(func(flag *pflag.Flag) {
-			multilog.Debug("main", "parse arguments", map[string]interface{}{
-				"flag":  flag.Name,
-				"value": flag.Value,
-			})
-		})
-	}
 
 	root.Execute()
 }
