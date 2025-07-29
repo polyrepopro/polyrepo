@@ -59,38 +59,93 @@ var statusCommand = &cobra.Command{
 			}
 
 			for _, repo := range *repos {
-				status := repositories.Status(files.ExpandPath(filepath.Join(w.Path, repo.Path)))
+				// Use enhanced status with remote information
+				var status repositories.StatusResult
+				remoteName := repo.Origin
+				if remoteName == "" {
+					// Fall back to detecting default remote
+					remoteName = "origin" // Default assumption
+				}
 
-				if status.Code == repositories.StatusDirty {
+				// Try enhanced status first, fall back to basic status if it fails
+				status = repositories.StatusWithRemote(files.ExpandPath(filepath.Join(w.Path, repo.Path)), remoteName)
+				if status.Code == repositories.StatusError {
+					// Fall back to basic status if remote status fails
+					status = repositories.Status(files.ExpandPath(filepath.Join(w.Path, repo.Path)))
+				}
+
+				// Count dirty repositories (including unpushed/unpulled)
+				isDirty := status.Code == repositories.StatusDirty ||
+					status.Code == repositories.StatusUnpushed ||
+					status.Code == repositories.StatusUnpulled
+
+				if isDirty {
 					totalDirty++
 					if all || dirty {
+						var message string
+						var coloredMessage string
+
 						if verbose {
-							multilog.Info(w.Name, repo.Name, map[string]interface{}{
-								"path":    filepath.Join(w.Path, repo.Path),
-								"name":    repo.Name,
-								"dirty":   true,
-								"message": color.RedString(status.Message),
-							})
+							message = status.Message
 						} else {
-							multilog.Info(w.Name, repo.Name, map[string]interface{}{
-								"path":    filepath.Join(w.Path, repo.Path),
-								"name":    repo.Name,
-								"dirty":   true,
-								"message": color.RedString("pending changes"),
-							})
+							switch status.Code {
+							case repositories.StatusDirty:
+								message = "pending changes"
+							case repositories.StatusUnpushed:
+								message = fmt.Sprintf("↑%d", status.AheadCount)
+							case repositories.StatusUnpulled:
+								message = fmt.Sprintf("↓%d", status.BehindCount)
+							default:
+								message = status.Message
+							}
 						}
+
+						// Color coding based on status
+						switch status.Code {
+						case repositories.StatusDirty:
+							coloredMessage = color.RedString(message)
+						case repositories.StatusUnpushed:
+							coloredMessage = color.YellowString(message)
+						case repositories.StatusUnpulled:
+							coloredMessage = color.BlueString(message)
+						default:
+							coloredMessage = color.RedString(message)
+						}
+
+						logData := map[string]interface{}{
+							"path":    filepath.Join(w.Path, repo.Path),
+							"name":    repo.Name,
+							"dirty":   true,
+							"message": coloredMessage,
+						}
+
+						// Add remote status details if available
+						if status.NeedsPush {
+							logData["needs_push"] = true
+							logData["ahead"] = status.AheadCount
+						}
+						if status.NeedsPull {
+							logData["needs_pull"] = true
+							logData["behind"] = status.BehindCount
+						}
+
+						multilog.Info(w.Name, repo.Name, logData)
 					}
 				} else {
 					if all || clean {
-						message := color.GreenString("clean")
-						if verbose {
-							message = color.GreenString(status.Message)
+						message := "clean"
+						if status.Code == repositories.StatusClean {
+							message = "clean and up to date"
 						}
+						if verbose {
+							message = status.Message
+						}
+
 						multilog.Info(w.Name, repo.Name, map[string]interface{}{
 							"path":    filepath.Join(w.Path, repo.Path),
 							"name":    repo.Name,
 							"dirty":   false,
-							"message": message,
+							"message": color.GreenString(message),
 						})
 					}
 				}
@@ -98,17 +153,22 @@ var statusCommand = &cobra.Command{
 			}
 
 			var message string
-			if totalDirty == 0 {
-				message = fmt.Sprintf("all %d repositories in %s are clean", total, w.Name)
-			} else if totalDirty == total {
-				message = fmt.Sprintf("all %d repositories in %s are dirty", total, w.Name)
-			} else {
-				message = fmt.Sprintf("%d/%d repositories in %s are dirty", totalDirty, total, w.Name)
+			cleanCount := total - totalDirty
+
+			switch {
+			case totalDirty == 0:
+				message = fmt.Sprintf("all %d repositories in %s are clean and up to date", total, w.Name)
+			case totalDirty == total:
+				message = fmt.Sprintf("all %d repositories in %s need attention", total, w.Name)
+			default:
+				message = fmt.Sprintf("%d/%d repositories in %s need attention", totalDirty, total, w.Name)
 			}
+
 			multilog.Info(w.Name, message, map[string]interface{}{
 				"workspace": w.Name,
-				"clean":     color.GreenString(fmt.Sprintf("%d", total-totalDirty)),
-				"dirty":     color.RedString(fmt.Sprintf("%d", totalDirty)),
+				"clean":     color.GreenString(fmt.Sprintf("%d", cleanCount)),
+				"dirty":     color.YellowString(fmt.Sprintf("%d", totalDirty)),
+				"total":     total,
 			})
 		}
 	},
